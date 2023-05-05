@@ -7,7 +7,7 @@
 }
 body
 {
-    background:  url("/images/regsteration-image/photo-1551934262-db2d7dd517f4.avif");
+    background:  url("../images/regsteration-image/photo-1551934262-db2d7dd517f4.avif");
     /* background-blend-mode: darken; */
     background-position: center center;
     background-size: cover;
