@@ -5,9 +5,20 @@
 }
 
 body{
-    background-color:#E3D5CC ;
+    background: rgba(0,0,0,0.7) url("../images/blog-image/premium_photo-1676158159495-6b8448629412.avif");
+    background-blend-mode: darken;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
     direction: rtl;
+    font-family: 'myArabicFont';
 }
+@font-face {
+    font-family: 'myArabicFont';
+    src: url('../webfonts/Droid.ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
 /* start title */
 .container{
     width: 80%;
@@ -18,7 +29,7 @@ body{
     margin-top: 50px;
 }
 .title h1{
-     color: rgba(0, 0, 0,0.9);
+     color:#fff;
      text-align: center;
      font-size: 40px;
     
@@ -28,7 +39,7 @@ h1:after {
     display: block;
     width: 120px;
     height: 2px;
-    background: #000;
+    background: #fff;
     right: 46%;
     position: absolute;
   }
@@ -36,23 +47,26 @@ h1:after {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    gap: 15px;
+    color: #fff ;
 }
 .blog-info {
     padding: 15px;
+    background-color: rgba(255,255,255,0.3);
+    max-height: 600px;
+    border-radius: 10px;
 }
-.blog-info h1{
+.blog-info h2{
     margin-top: 30px;
     text-align: center;
 }
 .blog-info h4{
     text-align: start;
     margin: 10px 0px;
-    
 }
 .blog-info p{
     text-align: start;
     color: #B89C8A;
-    
 }
 .blog-info button{
     margin-top: 30px;
@@ -69,11 +83,11 @@ h1:after {
 }
 .blog-info img{
     width: 100%;
-    height: 70%;
+    height: 50%;
 }
 
 .blog-contant .edit{
-    background-color: #fff;
+    background-color: rgba(255,255,255,0.3);
     padding: 15px;
 }
 
