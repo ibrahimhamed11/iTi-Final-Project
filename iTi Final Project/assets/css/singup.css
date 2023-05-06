@@ -82,6 +82,9 @@ body {
     border-radius: 10px;
     outline: none;
 }
+.form-left input::placeholder{
+    font-family: 'myArabicFont';
+}
 
 .form-left select {
     width: 200px;
