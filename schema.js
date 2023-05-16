@@ -2,6 +2,17 @@
 //npm i validator
 const validator = require('validator');
 
+
+
+
+
+//Hagar --Ibrahim Hamed 
+//************************************************************************* */
+
+
+
+//Hagar
+//************************************************************************* */
 // User 
 //add enum have 2 value mother and seller
 //num of baby ->if 0 =pregnant else mother 
@@ -20,7 +31,7 @@ const userSchema = new Schema({
       message: 'Invalid email address',
     },
   },
-/************************/
+
   password: {
     type: String,
     required: true,
@@ -31,11 +42,16 @@ const userSchema = new Schema({
       message: 'Password must be at least 6  characters long',
     },
   },
-/************************/
+
   username: { type: String, required: true },
   age: { type: Number, required: true },
   role: { type: String, required: true },
-  /************************/
+
+
+
+
+//Ibrahim
+  //************************************************************************* */
   isPregnant: { type: Boolean, default: false },
   pregnancyMonth: { type: Number },
   babyWeight: { type: Number },
@@ -64,7 +80,21 @@ const userSchema = new Schema({
   },
 });
 
+//************************************************************************* */
 
+
+
+
+
+
+
+
+
+
+
+
+
+//Ahmed Anwar 
 // Products 
 const sellerProductSchema = new Schema({
   name: { type: String, required: true },
