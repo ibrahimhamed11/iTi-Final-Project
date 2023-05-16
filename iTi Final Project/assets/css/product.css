@@ -29,10 +29,10 @@ body{
 h1::after{
     content: "";
     display: block;
-    width: 120px;
+    width: 150px;
     height: 2px;
     background-color: black;
-    right: 46%;
+    right: 45%;
     position: absolute;
 }
 .search{
