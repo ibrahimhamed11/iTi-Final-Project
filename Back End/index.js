@@ -2,7 +2,8 @@ require('./config/config')
 const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./routes/users');
-const productRouter = require('./routes/productsRouter')
+const productRouter = require('./routes/productsRouter');
+const ordersRouter = require('./routes/ordersRouter')
 const app = express();
 const cors= require('cors');
 
@@ -26,3 +27,7 @@ app.use(router);
 
 //Products router
 app.use('/products',productRouter)
+
+//Orders Route 
+
+app.use('/orders',ordersRouter)

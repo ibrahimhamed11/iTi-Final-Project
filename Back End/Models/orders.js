@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 
 //Creating orders schema
 const orderSchema = new mongoose.Schema({
-    userId:{type: mongoose.Types.ObjectId, ref:'User', required:true},
-    productId:{type: mongoose.Types.ObjectId, ref:'products' , required: true},
+    // userId:{type: mongoose.Types.ObjectId, ref:'User', required:true},
+    // productId:{type: mongoose.Types.ObjectId, ref:'products' , required: true},
     qty: {type: Number, required: true},
-    shippingAdress:{
-        street:{type: String, required: true},
-        city:{type: String, required: true},
-        zipCode:{type: String, required: true},
-        country:{type: String, required: true}
-    },
+    // shippingAdress:{
+    //     street:{type: String, required: true},
+    //     city:{type: String, required: true},
+    //     zipCode:{type: String, required: true},
+    //     country:{type: String, required: true}
+    // },
     delStatus:{
         type: String,
         enum: ['pending','in progess',' delivered','canceled' ],
