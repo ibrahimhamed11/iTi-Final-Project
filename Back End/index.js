@@ -1,21 +1,28 @@
-const path = require('path');
-
+require('./config/config')
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const multer = require('multer');
-const userRoutes = require('./routes/users')
-
+const router = require('./routes/users');
+const productRouter = require('./routes/productsRouter')
 const app = express();
- app.use(express.json());
-app.use('/user' , userRoutes)
+const cors= require('cors');
 
- mongoose
-  .connect(
-    'mongodb://0.0.0.0/finalProject'
-  )
-  .then(result => {
-    app.listen(8080);
-    console.log("server started")
-  })
-  .catch(err => console.log(err));
+
+
+// Middleware
+app.use(cors()) //Added cors for allowing 
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
+
+
+// Start the server
+const port = 4000;
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+
+
+// Routes
+app.use(router);
+
+//Products router
+app.use('/products',productRouter)

@@ -1,94 +1,78 @@
 //validator module 
 //npm i validator
-const validator = require('validator');
+const validator = require('validator'); // validator module
 
-
-
-
-
-//Hagar --Ibrahim Hamed 
-//************************************************************************* */
-
-
-
-//Hagar
-//************************************************************************* */
-// User 
-//add enum have 2 value mother and seller
-//num of baby ->if 0 =pregnant else mother 
 const userSchema = new Schema({
-  name: { type: String, required: true },
-  
-  /************************/
+  name: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     required: true,
     unique: true,
     validate: {
-      validator: function (email) {
-        return validator.isEmail(email); 
-      },
-      message: 'Invalid email address',
-    },
+      validator: validator.isEmail,
+      message: 'Invalid email address'
+    }
   },
-
   password: {
     type: String,
     required: true,
     validate: {
-      validator: function (password) {
-        return password.length >= 6; 
-      },
-      message: 'Password must be at least 6  characters long',
-    },
+      validator: password => password.length >= 6,
+      message: 'Password must be at least 6 characters long'
+    }
   },
-
-  username: { type: String, required: true },
-  age: { type: Number, required: true },
-  role: { type: String, required: true },
-
-
-
-
-//Ibrahim
-  //************************************************************************* */
+  username: {
+    type: String,
+    required: true
+  },
+  age: {
+    type: Number,
+    required: true
+  },
+  numOfBaby: {
+    type: Number,
+    required: true,
+    validate: {
+      validator: function(numOfBaby) {
+        return numOfBaby >= 0;
+      },
+      message: 'Number of babies cannot be negative'
+    }
+  },
+  role: {
+    type: String,
+    required: true,
+    enum: ['pregnant', 'mother', 'seller'],
+    default: function() {
+      return this.numOfBaby === 0 ? 'pregnant' : 'mother';
+    }
+  },
   isPregnant: { type: Boolean, default: false },
   pregnancyMonth: { type: Number },
   babyWeight: { type: Number },
-  //baby card info
   profile: {
-      
-      //array of object 
-    babyInfo: {
-      weight: { type: Number },
-      height: { type: Number },
-      headSize: { type: Number },
-        //change age ->Num 
-        //Birhdate ->Date 
-      age: { type: Number },
-      temperature: { type: Number },
-      vaccination: { type: String },
-      extraInfo: {
-          //array of object 
-        foodTracker: { type: String },
-        kindOfFood: { type: String },
-      },
-    },
-
-    reportFile: { type: String },
-//    doctorName: { type: String },
-  },
+    babyInfo: [
+      {
+        weight: { type: Number },
+        height: { type: Number },
+        headSize: { type: Number },
+        age: { type: Number },
+        temperature: { type: Number },
+        vaccination: { type: String },
+        extraInfo: [
+          {
+            foodTracker: { type: String },
+            kindOfFood: { type: String }
+          }
+        ],
+        reportFile: { type: String }
+      }
+    ]
+  }
 });
-
-//************************************************************************* */
-
-
-
-
-
-
-
-
 
 
 
