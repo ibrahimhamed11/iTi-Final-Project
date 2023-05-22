@@ -13,6 +13,7 @@ const productSchema = new mongoose.Schema({
     ref: "User",
     role: "seller",
   },
+  rate:{type:Number}
 },{
   strict:false,
   versionKey:false,
