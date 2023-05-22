@@ -9,17 +9,16 @@ const productSchema = new mongoose.Schema({
   // image: { type: String, required: true },
   reviews: [{ type: String, date: { type: Date, default: Date.now } }],
   seller: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     role: "seller",
   },
-  rate:{type:Number}
-},{
-  strict:false,
-  versionKey:false,
+  rate: [{ type: Number }],
+}, {
+  strict: false,
+  versionKey: false,
 });
 
+const Product = mongoose.model('Product', productSchema);
 
-const products = mongoose.model('products', productSchema);
-
-module.exports = products;
+module.exports = Product;

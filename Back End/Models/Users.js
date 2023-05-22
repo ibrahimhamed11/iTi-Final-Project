@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema({
     // required: true,
     enum: ['pregnant', 'mother', 'seller'],
     default: function() {
-      return this.numOfBaby === 0 ? 'pregnant' : 'mother';
+      return this.numOfBaby === 0 ? 'pregnant' : 'seller';
     }
   },
   isPregnant: {
