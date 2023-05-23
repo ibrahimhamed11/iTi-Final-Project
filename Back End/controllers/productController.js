@@ -59,6 +59,9 @@ exports.productRate = async (req, res) => {
     }
   };
   
+
+//use put or patch if user make rate update product rate  
+  //find by id and update 
   //  calculate the average rate
   function calculateAverageRate(rate) {
     let totalRate = 0;
