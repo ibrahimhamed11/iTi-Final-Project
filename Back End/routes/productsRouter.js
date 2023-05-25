@@ -8,8 +8,7 @@ router.get('/:id', controller.getById);
 router.patch('/:id', controller.updateProduct);
 router.delete('/:id', controller.delProduct);
 router.delete('/delAll', controller.delAllProducts);
-
-// Get product Rate
-router.get('/:id/rate', controller.productRate);
+router.get('/:id/getrate', controller.productRate);
+router.patch('/:id/addrate', controller.updateProductRate);
 
 module.exports = router;

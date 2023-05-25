@@ -78,3 +78,27 @@ exports.productRate = async (req, res) => {
     return totalRate / numRate;
   }
   
+
+  //Product Patch or update 
+  exports.updateProductRate = async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const newRate = req.body.rate;
+  
+      const product = await products.findById(productId);
+      if (!product) {
+        return res.status(404).json({ error: 'Product not found' });
+      }
+  
+      product.rate.push(newRate);
+      await product.save();
+  
+      const averageRate = calculateAverageRate(product.rate);
+  
+      res.json({ averageRate });
+    } catch (error) {
+      console.error('Error updating product rate:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  

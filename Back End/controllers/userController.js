@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const express = require('express');
 const User = require('../Models/Users');
-
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const key = 'test'; // Repl
 // signUp
 
 exports.createUser = async (req, res) => {
@@ -34,7 +36,7 @@ exports.createUser = async (req, res) => {
     const newUser = new User({
       name,
       email,
-      password:hashedPassword,
+      password,
       username,
       age,
       numOfBaby,
@@ -54,41 +56,41 @@ exports.createUser = async (req, res) => {
   }
 };
 //Login 
-exports.loginUser = async (req, res) => {
+
+exports.loginUser = async function (req, res) {
   try {
-    const { username, password } = req.body;
-
-    // Find the user in the database based on the username
-    const user = await User.findOne({ username });
-
-    // Check if the user exists
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Compare the provided password with the stored hashed password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    // Check if the password is valid
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid password' });
-    }
-
-    // Generate a JWT token
-    const token = jwt.sign({ userId: user._id }, config.jwtSecret, {
-      expiresIn: '1h',
+    // Find user by email and password
+    let user = await User.findOne({
+      password: req.body.password,
+  
+      email: req.body.email,
     });
-        // Store the token in a cookie
-        res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // Max age is set to 1 hour (in milliseconds)
+    // console.log(User);
 
+    if (user) {
+      // Generate a JWT token
+    let payload = { userId: user._id };
+    let token = jwt.sign(payload, key);
 
-    // Return the token in the response
-    res.status(200).json({ token });
+    // Set the token as a cookie and redirect to the home page
+    res.cookie('token', token, { maxAge: 900000, httpOnly: true });
+  console.log(payload);
+      res.redirect('/getallusers');
+
+    } else {
+          // console.log(User);
+      res.status(401).json({ error: 'Invalid email or password' });
+    }
   } catch (error) {
     console.error('Error logging in user:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error logging in user' });
   }
 };
+
+// get login  
+exports.getlogin =async(req, res) => {
+  res.sendFile(path.join(__dirname, '../public/login.html'));
+}
 
 // Get user
 exports.getUser = async (req, res) => {
