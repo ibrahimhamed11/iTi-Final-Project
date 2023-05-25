@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Users = require('./Users'); // Import User model
+const Users = require('./Users');
 
 const blogPostSchema = new mongoose.Schema({
   title: {

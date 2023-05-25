@@ -1,9 +1,10 @@
 require('./config/config')
 const express = require('express');
 const mongoose = require('mongoose');
-const router = require('./routes/users');
+const usersRouter = require('./routes/users');
 const productRouter = require('./routes/productsRouter');
 const ordersRouter = require('./routes/ordersRouter')
+const blogsRouter = require("./routes/BlogPost")
 const app = express();
 const cors= require('cors');
 
@@ -23,10 +24,12 @@ app.listen(port, () => {
 
 
 // Routes
-app.use(router);
+app.use(usersRouter);
 
 //Products router
 app.use('/products',productRouter)
+app.use('/blogs',blogsRouter)
+
 
 //Orders Route 
 

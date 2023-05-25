@@ -11,4 +11,3 @@ router.delete('/:id',controller.delOrder)
 
 
 
-module.exports = router;
