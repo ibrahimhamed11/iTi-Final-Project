@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const User = require('../Models/Users');
+const User = require('../Models/users');
 const cookieParser = require('cookie-parser');
 
 function authMiddleware(req, res, next) {
