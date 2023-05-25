@@ -1,18 +1,11 @@
 const express = require('express');
-
- const authMiddleware = require('../controllers/auth');
-const BlogsController = require('../controllers/BlogPost');
-
 const router = express.Router();
+const blogPostController  = require('./../controllers/blogPostController')
 
-router.post('/', BlogsController.authenticateToken, BlogsController.createBlog)// Login route
-router.get('/',BlogsController.getAllUsers)//  router.use(loginAuthMiddleware);
+router.post('/blog-posts', blogPostController.createBlogPost);
+router.get('/blog-posts', blogPostController.getAllBlogPosts);
+router.get('/blog-posts/:id', blogPostController.getBlogPostById);
+router.put('/blog-posts/:id', blogPostController.updateBlogPost);
+router.delete('/blog-posts/:id', blogPostController.deleteBlogPost);
 
-router.get('/:id', BlogsController.getBlogPost, BlogsController.getBlog)
-
-
-
-router.patch('/:id', BlogsController.getBlogPost, BlogsController.updateBlog)
-
-router.delete('/:id',BlogsController.getBlogPost ,BlogsController.updateBlog)
 module.exports = router;

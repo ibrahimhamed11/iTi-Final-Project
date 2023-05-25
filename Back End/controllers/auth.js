@@ -1,12 +1,10 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const User = require('../Models/users');
+const User = require('../Models/Users'); // Assuming the model file is named User
 const cookieParser = require('cookie-parser');
 
 function authMiddleware(req, res, next) {
-
-  
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization;
 
   if (!token) {
     return res.status(401).json({ error: 'Authorization token not found' });

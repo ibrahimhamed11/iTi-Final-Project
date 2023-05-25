@@ -75,7 +75,7 @@ exports.loginUser = async function (req, res) {
     // Set the token as a cookie and redirect to the home page
     res.cookie('token', token, { maxAge: 900000, httpOnly: true });
   console.log(payload);
-      res.redirect('/getallusers');
+      res.redirect('getallusers');
 
     } else {
           // console.log(User);

@@ -2,16 +2,20 @@ require('./config/config')
 const express = require('express');
 const mongoose = require('mongoose');
 const router = require('./routes/users');
+
+// Routes
+const usersRouter = require('./routes/users');
 const productRouter = require('./routes/productsRouter');
-const ordersRouter = require('./routes/ordersRouter')
+const ordersRouter = require('./routes/ordersRouter');
+const blogsRouter = require('./routes/BlogPost');
+
 const app = express();
 const cors= require('cors');
 
 
 // Middleware
-app.use(cors()) //Added cors for allowing 
 app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
 
 
 // Start the server
@@ -21,14 +25,7 @@ app.listen(port, () => {
 });
 
 
-// Routes
-app.use(router);
-
-//Products router
-app.use('/products',productRouter)
-app.use('/blogs',blogsRouter)
-
-
-//Orders Route 
-
-app.use('/orders',ordersRouter)
+app.use('/users', usersRouter);
+app.use('/products', productRouter);
+app.use('/orders', ordersRouter);
+app.use('/blogs', blogsRouter);

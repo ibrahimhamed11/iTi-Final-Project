@@ -2,35 +2,26 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
- const authMiddleware = require('../controllers/auth');
+const authMiddleware = require('../controllers/auth');
 const controllers = require('../controllers/userController');
+const loginAuth = require('../controllers/loginAuth');
 
 const router = express.Router();
 
-// Signup route
+router.use(cors());
+router.use(express.json());
+
 router.post('/register', controllers.createUser);
-// Login route
 router.post('/login', controllers.loginUser);
-//  router.use(loginAuthMiddleware);
+// Define a route for the login page
+router.get('/login',controllers.getlogin );
+// router.use(loginAuth);
 // router.use(authMiddleware);
-//get all users 
-router.get('/users',controllers.getAllUsers);
 
-// Protected routes - Requires authentication middleware
-
-
-// Get user route
-router.get('/user/:userId',controllers.getUser );
-// Delete user route
+router.get('/getallusers', controllers.getAllUsers);
+router.get('/user/:userId', controllers.getUser);
 router.delete('/user/:userId', controllers.deleteUser);
-
-
-
-// Update user route
 router.put('/user', controllers.updateUser);
+router.use(express.static(path.join(__dirname, './../public')));
 
-
-
-
-
-
+module.exports = router;
