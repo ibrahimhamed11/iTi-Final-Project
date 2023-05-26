@@ -24,4 +24,4 @@ router.delete('/user/:userId', controllers.deleteUser);
 router.put('/user', controllers.updateUser);
 router.use(express.static(path.join(__dirname, './../public')));
 
-module.exports = router;
+module.exports = router

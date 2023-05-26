@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const user = require('./Users');
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -10,7 +11,7 @@ const productSchema = new mongoose.Schema({
   reviews: [{ type: String, date: { type: Date, default: Date.now } }],
   seller: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "user",
     role: "seller",
   },
   rate: [{ type: Number }],

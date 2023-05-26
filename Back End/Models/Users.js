@@ -79,7 +79,9 @@ const userSchema = new mongoose.Schema({
 });
 
 
- const User = mongoose.model('User', userSchema);
+ const user= mongoose.model('users', userSchema);
+
+ module.exports = user
 
 //  {
 //   "name": "John Doe",
@@ -118,5 +120,4 @@ const userSchema = new mongoose.Schema({
 
 
 
-module.exports = User;
 

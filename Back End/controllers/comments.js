@@ -1,3 +1,4 @@
+//comments controller
 const Comment = require('../Models/comments');
 
 // Create a new comment

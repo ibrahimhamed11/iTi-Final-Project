@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Users = require('./Users');
-
+const user = require('./Users');
+const comment = require('./comments');
 const blogPostSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -12,17 +12,16 @@ const blogPostSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
+    ref: 'user',
     required: true
   },
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Comment'
+      ref: 'comment'
     }
   ]
 });
 
-const BlogPost = mongoose.model('BlogPost', blogPostSchema);
-
-module.exports = BlogPost;
+const blogPost= mongoose.model('blogPosts', blogPostSchema);
+module.exports = blogPost

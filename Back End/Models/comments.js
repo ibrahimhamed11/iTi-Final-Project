@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const User = require('./Users'); // Import User model
-const BlogPost = require('./BlogPost'); // Import BlogPost model
+const user = require('./Users'); // Import User model
+const blogPost = require('./BlogPost'); // Import BlogPost model
 
 const commentSchema = new mongoose.Schema({
   content: {
@@ -9,12 +9,12 @@ const commentSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
+    ref: 'user',
     required: true
   },
   blogPost: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'BlogPost',
+    ref: 'blogPost',
     required: true
   }
 });
