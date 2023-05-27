@@ -3,13 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 
- const usersRouter = require('./routes/users');
+const usersRouter = require('./routes/users');
 
- const productRouter = require('./routes/productsRouter');
- const ordersRouter = require('./routes/ordersRouter')
- const blogsRouter = require("./routes/BlogPost")
- const commentsRouter = require('./routes/comments');
-
+const productRouter = require('./routes/productsRouter');
+const ordersRouter = require('./routes/ordersRouter')
+const blogsRouter = require("./routes/BlogPost")
+const commentsRouter = require('./routes/comments');
+const todoRouter = require('./routes/todoRoute');
 
 const app = express();
 const cors= require('cors');
@@ -27,11 +27,11 @@ app.use(express.urlencoded({ extended: false }));
  app.use('/blogs',blogsRouter)
  app.use('/comments',commentsRouter)
 
-
-
 //Orders Route 
+app.use('/orders',ordersRouter);
 
-app.use('/orders',ordersRouter)
+//Todo Route 
+app.use('/todo',todoRouter);
 
 
 
