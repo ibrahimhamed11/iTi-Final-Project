@@ -42,9 +42,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
     enum: ['pregnant', 'mother', 'seller'],
-    default: function() {
-      return this.numOfBaby === 0 ? 'pregnant' : 'mother';
-    }
+    // default: function() {
+    //   return this.numOfBaby === 0 ? 'pregnant' : 'mother';
+    // }
   },
   isPregnant: {
     type: Boolean,
