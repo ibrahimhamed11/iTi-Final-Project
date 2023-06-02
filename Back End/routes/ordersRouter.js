@@ -10,6 +10,3 @@ router.patch('/:id',controller.updateOrder);
 router.delete('/:id',controller.delOrder)
 
 module.exports = router;
-
-
-module.exports=router

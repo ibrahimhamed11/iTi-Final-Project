@@ -1,9 +1,36 @@
 const products = require('../Models/products')
+const multer = require('multer');
+const date = require('date-and-time');
+
+
+// Configure multer for file storage
+const fileStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, 'uploads/');
+  },
+  filename: (req, file, callback) => {
+    const fileName = Date.now() + file.originalname.replace(/ /g, '');
+    callback(null, fileName);
+  }
+});
+exports.upload = multer({ storage: fileStorage });
+
+
 
 
 exports.addProduct = (req, res) => {
+
+        
+
     const {name,price,description,category,stock,image,reviews,seller}= req.body
-    const product = new products({name,price,description,category,stock,image,reviews,seller})
+    const product = new products({
+      name,
+      price,
+      description,
+      category,stock,
+      image: req.file.filename,
+      reviews,
+      seller})
     product.save().then(product=> {
         res.status(201).json(product)
     }).catch(err=> {

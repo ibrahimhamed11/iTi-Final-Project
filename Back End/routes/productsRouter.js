@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/productController');
 
-router.post('/add', controller.addProduct);
+router.post('/add',controller.upload.single('image'), controller.addProduct);
 router.get('/getAll', controller.getAllProducts);
 router.get('/:id', controller.getById);
 router.patch('/:id', controller.updateProduct);
