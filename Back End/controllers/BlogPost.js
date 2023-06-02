@@ -3,6 +3,31 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const BlogPost = require('../Models/BlogPost');
+const multer = require('multer');
+const date = require('date-and-time');
+
+
+
+
+
+
+
+
+
+
+
+// Configure multer for file storage
+const fileStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, 'uploads/');
+  },
+  filename: (req, file, callback) => {
+    const fileName = Date.now() + file.originalname.replace(/ /g, '');
+    callback(null, fileName);
+  }
+});
+exports.upload = multer({ storage: fileStorage });
+
 
 // Create a new blog post
 exports.createBlog= async (req, res) => {
@@ -10,7 +35,8 @@ exports.createBlog= async (req, res) => {
     const blogPost = new BlogPost({
       title: req.body.title,
       content: req.body.content,
-      author: req.user.id
+      author: req.user.id,
+      image: req.file.filename,
     });
 
     const savedBlogPost = await blogPost.save();

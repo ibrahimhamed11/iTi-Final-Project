@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+    //required: true,
     minlength: 6
   },
   username: {
@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema({
     type: Number,
     // required: true
   },
+
+  image: {
+    type: String,
+    //  required: true
+  },
+
   numOfBaby: {
     type: Number,
     // required: true,
@@ -41,15 +47,12 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     // required: true,
-    enum: ['pregnant', 'mother', 'seller'],
+    // enum: ['pregnant', 'mother', 'seller'],
     // default: function() {
     //   return this.numOfBaby === 0 ? 'pregnant' : 'mother';
     // }
   },
-  isPregnant: {
-    type: Boolean,
-     default: false
-  },
+
   pregnancyMonth: {
     type: Number
   },
@@ -57,25 +60,25 @@ const userSchema = new mongoose.Schema({
     type: Number
   },
   
-  profile: {
-    babyInfo: [
-      {
-        weight: Number,
-        height: Number,
-        headSize: Number,
-        age: Number,
-        temperature: Number,
-        vaccination: String,
-        extraInfo: [
-          {
-            foodTracker: String,
-            kindOfFood: String
-          }
-        ],
-        reportFile: String
-      }
-    ]
-  }
+  // profile: {
+  //   babyInfo: [
+  //     {
+  //       weight: Number,
+  //       height: Number,f
+  //       headSize: Number,
+  //       age: Number,
+  //       temperature: Number,
+  //       vaccination: String,
+  //       extraInfo: [
+  //         {
+  //           foodTracker: String,
+  //           kindOfFood: String
+  //         }
+  //       ],
+  //       reportFile: String
+  //     }
+  //   ]
+  // }
 });
 
 

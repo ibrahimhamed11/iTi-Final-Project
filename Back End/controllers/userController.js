@@ -2,26 +2,33 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const express = require('express');
-const user = require('../Models/Users');
+const User = require('../Models/Users');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const { body } = require('express-validator/check');
 const key = 'test'; // Repl
-// signUp
+const multer = require('multer');
+const date = require('date-and-time');
 
+
+// Configure multer for file storage
+const fileStorage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, 'uploads/');
+  },
+  filename: (req, file, callback) => {
+    const fileName = Date.now() + file.originalname.replace(/ /g, '');
+    callback(null, fileName);
+  }
+});
+exports.upload = multer({ storage: fileStorage });
+
+
+
+//Register
 exports.createUser = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      password,
-      username,
-      age,
-      numOfBaby,
-      isPregnant,
-      pregnancyMonth,
-      babyWeight,
-      profile: { babyInfo },
-    } = req.body;
+    const { name, email, password, username, age, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ username });
@@ -30,22 +37,22 @@ exports.createUser = async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
     // Create a new user
     const newUser = new User({
       name,
       email,
-      password,
+      password: hashedPassword,
       username,
       age,
       numOfBaby,
       isPregnant,
       pregnancyMonth,
       babyWeight,
-      profile: { babyInfo },
+      role,
+      // image: req.file.filename,
     });
-
     // Save the user to the database
     await newUser.save();
 
@@ -55,30 +62,31 @@ exports.createUser = async (req, res) => {
     res.status(500).json({ error: 'Internal error' });
   }
 };
-//Login 
+
+//Login
 
 exports.loginUser = async function (req, res) {
   try {
-    // Find user by email and password
-    let user = await User.findOne({
-      password: req.body.password,
-  
-      email: req.body.email,
-    });
-    // console.log(User);
+    // Find user by email
+    const email = req.body.email;
+    let user = await User.findOne({ email: email });
 
     if (user) {
-      // Generate a JWT token
-    let payload = { userId: user._id };
-    let token = jwt.sign(payload, key);
+      // Compare the password
+      const password = req.body.password;
+      let isEqual = await bcrypt.compare(password, user.password);
 
-    // Set the token as a cookie and redirect to the home page
-    res.cookie('token', token, { maxAge: 900000, httpOnly: true });
-  console.log(payload);
-      res.redirect('getallusers');
+      if (isEqual) {
+        // Generate a JWT token
+        let payload = { userId: user._id };
+        let token = jwt.sign(payload, key);
 
+        // Set the token as a cookie and redirect to the home page
+        res.cookie('token', token, { maxAge: 900000, httpOnly: true });
+        console.log(payload);
+        res.redirect('getallusers');
+      } 
     } else {
-          // console.log(User);
       res.status(401).json({ error: 'Invalid email or password' });
     }
   } catch (error) {
@@ -91,6 +99,13 @@ exports.loginUser = async function (req, res) {
 exports.getlogin =async(req, res) => {
   res.sendFile(path.join(__dirname, '../public/login.html'));
 }
+
+// get register  
+exports.getRegister =async(req, res) => {
+  res.sendFile(path.join(__dirname, '../public/register.html'));
+}
+
+
 
 // Get user
 exports.getUser = async (req, res) => {
@@ -140,3 +155,108 @@ exports.getAllUsers = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+exports.getAllMothers = async (req, res) => {
+  try {
+    // Find all users in the database
+    const mothers = await User.find({role :"mother"});
+
+    res.status(200).json({ mothers });
+  } catch (error) {
+    console.error('Error retrieving mothers:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+exports.getAllSeller = async (req, res) => {
+  try {
+    // Find all users in the database
+    const sellers = await User.find({role:"seller"});
+
+    res.status(200).json({ sellers });
+  } catch (error) {
+    console.error('Error retrieving sellers:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+exports.getAllpregnant = async (req, res) => {
+  try {
+    // Find all users in the database
+    const pregnants = await User.find({role:"pregnant"});
+
+    res.status(200).json({ pregnants });
+  } catch (error) {
+    console.error('Error retrieving pregnants:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+exports.getNumberOfPregnant = async (req, res) => {
+  try {
+    // Find all users in the database with the role "pregnant"
+    const pregnants = await User.find({ role: "pregnant" });
+
+    // Get the count of all mothers Number
+    const totalMothers = pregnants.length;
+
+    res.status(200).json({ totalMothers });
+  } catch (error) {
+    console.error('Error retrieving pregnants:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+exports.getNumberOfMothers = async (req, res) => {
+  try {
+    // Find all users in the database with the role "mother"
+    const mothers = await User.find({ role: "mother" });
+
+    // Get the count of mothers Number
+    const countMothers = mothers.length;
+
+    res.status(200).json({ countMothers });
+  } catch (error) {
+    console.error('Error retrieving number of mothers:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.getNumberOfSellers = async (req, res) => {
+  try {
+    // Find all users in the database with the role "seller"
+    const sellers = await User.find({ role: "seller" });
+
+    // Get the count of sellers Number
+    const countSellers = sellers.length;
+
+    res.status(200).json({ countSellers });
+  } catch (error) {
+    console.error('Error retrieving number of sellers:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+// Get All users Number
+exports.getNumberOfUsers = async (req, res) => {
+  try {
+    // Find all users in the database
+    const users = await User.find();
+    const count = users.length;
+
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Error retrieving users:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+

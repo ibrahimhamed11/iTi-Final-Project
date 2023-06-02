@@ -1,24 +1,25 @@
 require('./config/config')
 const express = require('express');
 const mongoose = require('mongoose');
-
+const bodyparser = require('body-parser');
 
 const usersRouter = require('./routes/users');
-
 const productRouter = require('./routes/productsRouter');
 const ordersRouter = require('./routes/ordersRouter')
 const blogsRouter = require("./routes/BlogPost")
 const commentsRouter = require('./routes/comments');
 const todoRouter = require('./routes/todoRoute');
-
 const app = express();
 const cors= require('cors');
+const path=require('path');
+const multer = require('multer');
 
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
 // Routes
  app.use('/user',usersRouter);
 
@@ -32,6 +33,8 @@ app.use('/orders',ordersRouter);
 
 //Todo Route 
 app.use('/todo',todoRouter);
+
+
 
 
 
