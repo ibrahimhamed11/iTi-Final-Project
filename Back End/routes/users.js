@@ -22,8 +22,6 @@ router.get('/register',controllers.getRegister );
 router.get('/getallusers', controllers.getAllUsers);
 router.get('/getallmothers', controllers.getAllMothers);
 router.get('/getallseller', controllers.getAllSeller);
-
-
 router.get('/getallsellernum', controllers.getNumberOfSellers);
 router.get('/getallmothernum', controllers.getNumberOfMothers);
 router.get('/getallpregnantnum', controllers.getNumberOfPregnant);
