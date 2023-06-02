@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
   },
   isPregnant: {
     type: Boolean,
-    // default: false
+     default: false
   },
   pregnancyMonth: {
     type: Number
