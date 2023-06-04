@@ -51,7 +51,7 @@ exports.createUser = async (req, res) => {
       pregnancyMonth,
       babyWeight,
       role,
-      image: req.file.filename,
+      // image: req.file.filename,
     });
     // Save the user to the database
     await newUser.save();
@@ -124,13 +124,24 @@ exports.getUser = async (req, res) => {
 };
 
 // Update user
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
   try {
-    // ... rest of the update user code ...
+    const userId = req.body.userId;
+    const updatedData = req.body.updatedData;
+
+    // Find the user by ID and update the data
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 // Delete user
 exports.deleteUser = async (req, res) => {
@@ -260,3 +271,103 @@ exports.getNumberOfUsers = async (req, res) => {
   }
 };
 
+exports.getMotherRegisteredPerDay = async (req, res) => {
+  let registrations = {}; // Declare the registrations object outside the try block
+  try {
+    const result = await User.aggregate([
+      {
+        $match: { role: "mother" } // Add a $match stage to filter users with role "mother"
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$registrationDate' }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+
+    // The result will be an array of objects with the format { _id: 'yyyy-mm-dd', count: <number> }
+
+    // Convert the array of objects into an object with dates as keys and counts as values
+    result.forEach((item) => {
+      registrations[item._id] = item.count;
+    });
+
+    // Send the registrations object as the response
+    res.json(registrations);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
+exports.getPregnantRegisteredPerDay = async (req, res) => {
+  let registrations = {}; // Declare the registrations object outside the try block
+  try {
+    const result = await User.aggregate([
+      {
+        $match: { role: "pregnant" } // Add a $match stage to filter users with role "mother"
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$registrationDate' }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+
+
+    // Convert the array of objects into an object with dates as keys and counts as values
+    result.forEach((item) => {
+      registrations[item._id] = item.count;
+    });
+
+    // Send the registrations object as the response
+    res.json(registrations);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.getSellerRegisteredPerDay = async (req, res) => {
+  let registrations = {}; // Declare the registrations object outside the try block
+  try {
+    const result = await User.aggregate([
+      {
+        $match: { role: "seller" } // Add a $match stage to filter users with role "mother"
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: '%Y-%m-%d', date: '$registrationDate' }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+
+
+    // Convert the array of objects into an object with dates as keys and counts as values
+    result.forEach((item) => {
+      registrations[item._id] = item.count;
+    });
+
+    // Send the registrations object as the response
+    res.json(registrations);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};

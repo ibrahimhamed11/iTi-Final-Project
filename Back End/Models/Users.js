@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
       message: 'Invalid email address'
     }
   },
+  registrationDate: {
+    type: Date,
+    default: Date.now // Set the default value to the current date and time
+  },
   password: {
     type: String,
     //required: true,
@@ -29,10 +33,10 @@ const userSchema = new mongoose.Schema({
     // required: true
   },
 
-  image: {
-    type: String,
-    //  required: true
-  },
+  // image: {
+  //   type: String,
+  //   //  required: true
+  // },
 
   numOfBaby: {
     type: Number,

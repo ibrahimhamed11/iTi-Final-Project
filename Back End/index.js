@@ -9,10 +9,10 @@ const ordersRouter = require('./routes/ordersRouter')
 const blogsRouter = require("./routes/BlogPost")
 const commentsRouter = require('./routes/comments');
 const todoRouter = require('./routes/todoRoute');
+const vaccinationRouter = require('./routes/vaccination');
 const app = express();
 const cors= require('cors');
 const path=require('path');
-const multer = require('multer');
 
 
 // Middleware
@@ -27,16 +27,14 @@ app.use(bodyparser.json());
  app.use('/products',productRouter)
  app.use('/blogs',blogsRouter)
  app.use('/comments',commentsRouter)
-
 //Orders Route 
 app.use('/orders',ordersRouter);
 
 //Todo Route 
 app.use('/todo',todoRouter);
 
-
-
-
+//vaccination 
+app.use('/vaccination',vaccinationRouter);
 
 
 // Start the server
