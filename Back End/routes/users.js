@@ -25,9 +25,9 @@ router.get('/getallsellernum', controllers.getNumberOfSellers);
 router.get('/getallmothernum', controllers.getNumberOfMothers);
 router.get('/getallpregnantnum', controllers.getNumberOfPregnant);
 router.get('/getallusersnum', controllers.getNumberOfUsers);
-router.get('/user/:userId', controllers.getUser);
-router.delete('/user/:userId', controllers.deleteUser);
-router.put('/user/:userId', controllers.updateUser);
+router.get('/:userId', controllers.getUser);
+router.delete('/:userId', controllers.deleteUser);
+router.put('/:userId', controllers.updateUser);
 //for charts 
 router.get('/mothers-per-day', controllers.getMotherRegisteredPerDay);
 router.get('/pregnant-per-day', controllers.getPregnantRegisteredPerDay);

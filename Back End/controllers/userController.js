@@ -28,7 +28,7 @@ exports.upload = multer({ storage: fileStorage });
 //Register
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, username, age, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body;
+    const { name, email, password, username, age,phone,address, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ username });
@@ -46,6 +46,8 @@ exports.createUser = async (req, res) => {
       password: hashedPassword,
       username,
       age,
+      phone,
+      address,
       numOfBaby,
       isPregnant,
       pregnancyMonth,

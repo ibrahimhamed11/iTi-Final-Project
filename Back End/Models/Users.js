@@ -32,6 +32,18 @@ const userSchema = new mongoose.Schema({
     type: Number,
     // required: true
   },
+  phone:{
+
+type:Number,
+
+  },
+
+address:{
+
+type:String
+
+},
+
 
   // image: {
   //   type: String,
