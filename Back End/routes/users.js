@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors');
+
 const path = require('path');
 
 const authMiddleware = require('../controllers/auth');
@@ -8,10 +8,10 @@ const loginAuth = require('../controllers/loginAuth');
 
 const router = express.Router();
 
-router.use(cors());
-router.use(express.json());
 
-router.post('/register',controllers.upload.single('image'), controllers.createUser);
+
+
+router.post('/register', controllers.createUser);
 router.post('/login', controllers.loginUser);
 // Define a route for the login page
 router.get('/login',controllers.getlogin );

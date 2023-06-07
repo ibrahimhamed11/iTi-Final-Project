@@ -28,13 +28,14 @@ exports.upload = multer({ storage: fileStorage });
 //Register
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, username, age,phone,address, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body;
+    const { name, email, password, username, age,phone,address,role} = req.body.user;
+    console.log(req.body);
 
     // Check if the user already exists
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(409).json({ error: 'Username already exists' });
-    }
+    // const existingUser = await User.findOne({ username });
+    // if (existingUser) {
+    //   return res.status(409).json({ error: 'Username already exists' });
+    // }
 
     // Hash the password
     const salt = await bcrypt.genSalt(10);
@@ -43,15 +44,15 @@ exports.createUser = async (req, res) => {
     const newUser = new User({
       name,
       email,
-      password: hashedPassword,
+      password:hashedPassword ,
       username,
       age,
       phone,
       address,
-      numOfBaby,
-      isPregnant,
-      pregnancyMonth,
-      babyWeight,
+      // numOfBaby,
+      // isPregnant,
+      // pregnancyMonth,
+      // babyWeight,
       role,
       // image: req.file.filename,
     });

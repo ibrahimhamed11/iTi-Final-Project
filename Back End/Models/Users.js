@@ -50,16 +50,17 @@ type:String
   //   //  required: true
   // },
 
-  numOfBaby: {
-    type: Number,
-    // required: true,
-    validate: {
-      validator: function(numOfBaby) {
-        return numOfBaby >= 0;
-      },
-      message: 'Number of babies cannot be negative'
-    }
-  },
+  // numOfBaby: {
+  //   type: Number,
+  //   // required: true,
+  //   validate: {
+  //     validator: function(numOfBaby) {
+  //       return numOfBaby >= 0;
+  //     },
+  //     message: 'Number of babies cannot be negative'
+  //   }
+  // }
+  
   role: {
     type: String,
     // required: true,
@@ -69,12 +70,12 @@ type:String
     // }
   },
 
-  pregnancyMonth: {
-    type: Number
-  },
-  babyWeight: {
-    type: Number
-  },
+  // pregnancyMonth: {
+  //   type: Number
+  // },
+  // babyWeight: {
+  //   type: Number
+  // },
   
   // profile: {
   //   babyInfo: [

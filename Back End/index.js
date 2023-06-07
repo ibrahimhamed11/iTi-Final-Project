@@ -1,8 +1,6 @@
 require('./config/config')
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
-
 const usersRouter = require('./routes/users');
 const productRouter = require('./routes/productsRouter');
 const ordersRouter = require('./routes/ordersRouter')
@@ -16,10 +14,11 @@ const path=require('path');
 
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyparser.urlencoded({ extended: false }));
-app.use(bodyparser.json());
+// app.use(bodyparser.urlencoded({ extended: true }));
+// app.use(bodyparser.json());
 // Routes
  app.use('/user',usersRouter);
 
