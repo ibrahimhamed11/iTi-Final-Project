@@ -32,10 +32,10 @@ exports.createUser = async (req, res) => {
     console.log(req.body);
 
     // Check if the user already exists
-    // const existingUser = await User.findOne({ username });
-    // if (existingUser) {
-    //   return res.status(409).json({ error: 'Username already exists' });
-    // }
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).json({ error: 'Username already exists' });
+    }
 
     // Hash the password
     const salt = await bcrypt.genSalt(10);
