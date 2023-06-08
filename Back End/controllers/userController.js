@@ -24,15 +24,13 @@ const fileStorage = multer.diskStorage({
 exports.upload = multer({ storage: fileStorage });
 
 
-
 //Register
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, username, age,phone,address,role} = req.body.user;
-    console.log(req.body);
+    const { name, email, password, username, age,phone,address, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body.user;
 
     // Check if the user already exists
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ error: 'Username already exists' });
     }
@@ -40,26 +38,26 @@ exports.createUser = async (req, res) => {
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    // const hashedPassword ="testtesttesttest";
     // Create a new user
     const newUser = new User({
       name,
       email,
-      password:hashedPassword ,
+      password: hashedPassword,
       username,
       age,
       phone,
       address,
-      // numOfBaby,
-      // isPregnant,
-      // pregnancyMonth,
-      // babyWeight,
+      numOfBaby,
+      isPregnant,
+      pregnancyMonth,
+      babyWeight,
       role,
       // image: req.file.filename,
     });
     // Save the user to the database
     await newUser.save();
-
-    res.status(201).json({ message: 'User created successfully' });
+    res.status(200).json({ message: 'User created successfully', status:200});
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal error' });
@@ -120,7 +118,7 @@ exports.getUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json({ data:user });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -139,7 +137,7 @@ exports.updateUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json(updatedUser);
+    res.status(200).json({updatedUser , status:200});
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -371,6 +369,6 @@ exports.getSellerRegisteredPerDay = async (req, res) => {
     // Send the registrations object as the response
     res.json(registrations);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
+    res.status(500).json({ error: 'Server error' });
+  }
 };
