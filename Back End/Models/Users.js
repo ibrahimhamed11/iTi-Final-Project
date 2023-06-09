@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    //required: true,
+    required: true,
     minlength: 6
   },
   username: {
@@ -50,16 +50,16 @@ type:String
   //   //  required: true
   // },
 
-  // numOfBaby: {
-  //   type: Number,
-  //   // required: true,
-  //   validate: {
-  //     validator: function(numOfBaby) {
-  //       return numOfBaby >= 0;
-  //     },
-  //     message: 'Number of babies cannot be negative'
-  //   }
-  // }
+  numOfBaby: {
+    type: Number,
+    // required: true,
+    validate: {
+      validator: function(numOfBaby) {
+        return numOfBaby >= 0;
+      },
+      message: 'Number of babies cannot be negative'
+    }
+  },
   
   role: {
     type: String,

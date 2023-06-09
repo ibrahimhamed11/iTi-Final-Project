@@ -24,42 +24,40 @@ const fileStorage = multer.diskStorage({
 exports.upload = multer({ storage: fileStorage });
 
 
-
 //Register
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, username, age,phone,address,role} = req.body.user;
-    console.log(req.body);
+    const { name, email, password, username, age,phone,address, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body.user;
 
     // Check if the user already exists
-    // const existingUser = await User.findOne({ username });
-    // if (existingUser) {
-    //   return res.status(409).json({ error: 'Username already exists' });
-    // }
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ error: 'Username already exists' });
+    }
 
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    // const hashedPassword ="testtesttesttest";
     // Create a new user
     const newUser = new User({
       name,
       email,
-      password:hashedPassword ,
+      password: hashedPassword,
       username,
       age,
       phone,
       address,
-      // numOfBaby,
-      // isPregnant,
-      // pregnancyMonth,
-      // babyWeight,
+      numOfBaby,
+      isPregnant,
+      pregnancyMonth,
+      babyWeight,
       role,
       // image: req.file.filename,
     });
     // Save the user to the database
     await newUser.save();
-
-    res.status(201).json({ message: 'User created successfully' });
+    res.status(200).json({ message: 'User created successfully', status:200});
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal error' });
@@ -76,18 +74,21 @@ exports.loginUser = async function (req, res) {
 
     if (user) {
       // Compare the password
+
       const password = req.body.password;
       let isEqual = await bcrypt.compare(password, user.password);
 
       if (isEqual) {
         // Generate a JWT token
+
         let payload = { userId: user._id };
         let token = jwt.sign(payload, key);
 
         // Set the token as a cookie and redirect to the home page
         res.cookie('token', token, { maxAge: 900000, httpOnly: true });
         console.log(payload);
-        res.redirect('getallusers');
+        // res.redirect('getallusers');
+        res.status(200).json({data:{token:token,user:user.name},status:200})
       } 
     } else {
       res.status(401).json({ error: 'Invalid email or password' });
@@ -120,7 +121,7 @@ exports.getUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json({ data:user });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -139,7 +140,7 @@ exports.updateUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json(updatedUser);
+    res.status(200).json({updatedUser , status:200});
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
