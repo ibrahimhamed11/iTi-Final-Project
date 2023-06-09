@@ -372,6 +372,6 @@ exports.getSellerRegisteredPerDay = async (req, res) => {
     // Send the registrations object as the response
     res.json(registrations);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
+    res.status(500).json({ error: 'Server error' });
+  }
 };
