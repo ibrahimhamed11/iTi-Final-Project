@@ -23,7 +23,6 @@ exports.createVaccination = async (req, res) => {
     maxAge,
   });
 
-
   try {
     const savedVaccination = await vaccination.save();
     res.status(201).json({data:{savedVaccination },status:200});
