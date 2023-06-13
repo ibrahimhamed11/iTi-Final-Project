@@ -2,6 +2,8 @@ require('./config/config')
 const express = require('express');
 const bodyparser = require('body-parser');
 const usersRouter = require('./routes/users');
+const chartsRouter = require('./routes/charts');
+
 const productRouter = require('./routes/productsRouter');
 const ordersRouter = require('./routes/ordersRouter')
 const blogsRouter = require("./routes/BlogPost")
@@ -33,6 +35,12 @@ app.use('/orders',ordersRouter);
 //Todo Route 
 app.use('/todo',todoRouter);
 
+//vaccination 
+app.use('/vaccination',vaccinationRouter);
+
+
+//charts
+app.use('/charts',chartsRouter);
 //vaccination 
 app.use('/vaccination',vaccinationRouter);
 
