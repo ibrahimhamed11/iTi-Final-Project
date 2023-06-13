@@ -31,10 +31,6 @@ router.get('/getallusersnum', controllers.getNumberOfUsers);
 router.get('/:userId', controllers.getUser);
 router.delete('/:userId', controllers.deleteUser);
 router.put('/:userId', controllers.updateUser);
-//for charts 
-router.get('/mothers-per-day', controllers.getMotherRegisteredPerDay);
-router.get('/pregnant-per-day', controllers.getPregnantRegisteredPerDay);
-router.get('/seller-per-day', controllers.getSellerRegisteredPerDay);
 
 router.use(express.static(path.join(__dirname, './../public')));
 module.exports = router

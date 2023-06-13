@@ -331,7 +331,9 @@ exports.getMotherRegisteredPerDay = async (req, res) => {
 
     // Send the registrations object as the response
     res.json(registrations);
+
   } catch (error) {
+    console.log(registrations);
     res.status(500).json({ error: 'Server error' });
   }
 };

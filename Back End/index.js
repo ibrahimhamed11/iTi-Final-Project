@@ -2,6 +2,8 @@ require('./config/config')
 const express = require('express');
 const bodyparser = require('body-parser');
 const usersRouter = require('./routes/users');
+const chartsRouter = require('./routes/charts');
+
 const productRouter = require('./routes/productsRouter');
 const ordersRouter = require('./routes/ordersRouter')
 const blogsRouter = require("./routes/BlogPost")
@@ -39,6 +41,12 @@ app.use('/todo',todoRouter);
 app.use('/vaccination',vaccinationRouter);
 app.use('/cart',CartRouter);
 
+
+
+//charts
+app.use('/charts',chartsRouter);
+//vaccination 
+app.use('/vaccination',vaccinationRouter);
 
 // Start the server
 const port = 4000;

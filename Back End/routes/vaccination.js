@@ -11,11 +11,11 @@ router.post('/add', vaccinationController.createVaccination);
 // get  vaccines
 router.get('/getAll', vaccinationController.getAllVaccines);
 // get a vaccine by ID
-router.get('/:id', vaccinationController.getVaccineById);
+router.get('/:vaccinationId', vaccinationController.getVaccineById);
 // Update a vaccination
-router.put('/:id', vaccinationController.updateVaccination);
+router.put('/:vaccinationId', vaccinationController.updateVaccination);
 // Delete a vaccination
-router.delete('/:id', vaccinationController.deleteVaccination);
+router.delete('/:vaccinationId', vaccinationController.deleteVaccination);
 
 //---------------------------------------------------------------------------------------------------
 

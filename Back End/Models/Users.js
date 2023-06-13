@@ -32,24 +32,12 @@ const userSchema = new mongoose.Schema({
     type: Number,
     // required: true
   },
-  phone:{
-
-type:Number,
-
+  phone: {
+    type: Number
   },
-
-address:{
-
-type:String
-
-},
-
-
-  // image: {
-  //   type: String,
-  //   //  required: true
-  // },
-
+  address: {
+    type: String
+  },
   numOfBaby: {
     type: Number,
     // required: true,
@@ -60,7 +48,6 @@ type:String
       message: 'Number of babies cannot be negative'
     }
   },
-  
   role: {
     type: String,
     // required: true,
@@ -69,19 +56,17 @@ type:String
     //   return this.numOfBaby === 0 ? 'pregnant' : 'mother';
     // }
   },
-
   // pregnancyMonth: {
   //   type: Number
   // },
   // babyWeight: {
   //   type: Number
   // },
-  
   // profile: {
   //   babyInfo: [
   //     {
   //       weight: Number,
-  //       height: Number,f
+  //       height: Number,
   //       headSize: Number,
   //       age: Number,
   //       temperature: Number,
@@ -98,46 +83,6 @@ type:String
   // }
 });
 
+const User = mongoose.model('User', userSchema);
 
- const user= mongoose.model('users', userSchema);
-
- module.exports = user
-
-//  {
-//   "name": "John Doe",
-//   "email": "johndddogge@example.com",
-//   "password": "password123",
-//   "username": "johnggdoe123",
-//   "age": 30,
-//   "numOfBaby": 1,
-//   "isPregnant": false,
-//   "pregnancyMonth": null,
-//   "babyWeight": null,
-//   "profile": {
-//     "babyInfo": [
-//       {
-//         "weight": 3.2,
-//         "height": 50,
-//         "headSize": 35,
-//         "age": 1,
-//         "temperature": 37.5,
-//         "vaccination": "DTaP",
-//         "extraInfo": [
-//           {
-//             "foodTracker": "Monday",
-//             "kindOfFood": "Vegetables"
-//           },
-//           {
-//             "foodTracker": "Tuesday",
-//             "kindOfFood": "Fruits"
-//           }
-//         ],
-//         "reportFile": "baby_report.pdf"
-//       }
-//     ]
-//   }
-// }
-
-
-
-
+module.exports = User;
