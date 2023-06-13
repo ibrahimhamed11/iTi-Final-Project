@@ -1,7 +1,20 @@
 const Vaccination = require('../Models/vaccination');
 
+
+exports.getVaccineById = async (req,res) => {
+  console.log(req.params.id)
+  const vaccine = await Vaccination.findById(req.params.id);
+  console.log(vaccine)
+  res.send({data:vaccine})
+}
+exports.getAllVaccines = async (req,res) => {
+  const vaccines = await Vaccination.find()
+  res.send(vaccines);
+}
+
+
 exports.createVaccination = async (req, res) => {
-  const {  name, date, minAge, maxAge } = req.body;
+  const {  name,date, minAge, maxAge } = req.body;
 
   const vaccination = new Vaccination({
     name,
@@ -13,7 +26,7 @@ exports.createVaccination = async (req, res) => {
 
   try {
     const savedVaccination = await vaccination.save();
-    res.status(201).json(savedVaccination);
+    res.status(201).json({data:{savedVaccination },status:200});
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -22,8 +35,8 @@ exports.createVaccination = async (req, res) => {
 
 exports.updateVaccination = async (req, res) => {
   try {
-    const { vaccinationId } = req.params;
-    const {  name, date, minAge, maxAge } = req.body;
+    const { vaccinationId } = req.params.id;
+    const {  name, date,minAge, maxAge } = req.body;
 
     const updatedVaccination = await Vaccination.findByIdAndUpdate(
       vaccinationId,

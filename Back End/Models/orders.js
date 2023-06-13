@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
     // },
     delStatus:{
         type: String,
-        enum: ['pending','in progess',' delivered','canceled' ],
+        enum: ['pending','in progress','delivered','canceled' ],
         default: 'pending'
     },
     // payMethod:{type: String}, to be handeld later

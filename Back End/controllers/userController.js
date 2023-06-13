@@ -32,7 +32,7 @@ exports.createUser = async (req, res) => {
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ error: 'Username already exists' });
+      return res.status(409).json({ error: 'email already exists' });
     }
 
     // Hash the password
@@ -183,6 +183,33 @@ exports.getAllMothers = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+// Mariam Added get pregnants+get admins
+exports.getAllPregnants = async (req, res) => {
+  try {
+    // Find all users in the database
+    const pregnants = await User.find({role :"pregnant"});
+
+    res.status(200).json({ pregnants });
+  } catch (error) {
+    console.error('Error retrieving pregnants:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+exports.getAllAdmins = async (req, res) => {
+  try {
+    // Find all users in the database
+    const admins = await User.find({role :"admin"});
+
+    res.status(200).json({ admins });
+  } catch (error) {
+    console.error('Error retrieving Admins:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 
 exports.getAllSeller = async (req, res) => {
@@ -308,7 +335,6 @@ exports.getMotherRegisteredPerDay = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
-
 
 exports.getPregnantRegisteredPerDay = async (req, res) => {
   let registrations = {}; // Declare the registrations object outside the try block

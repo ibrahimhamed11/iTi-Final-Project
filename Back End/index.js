@@ -26,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
  app.use('/products',productRouter)
  app.use('/blogs',blogsRouter)
  app.use('/comments',commentsRouter)
+
 //Orders Route 
 app.use('/orders',ordersRouter);
 
@@ -34,7 +35,6 @@ app.use('/todo',todoRouter);
 
 //vaccination 
 app.use('/vaccination',vaccinationRouter);
-
 
 // Start the server
 const port = 4000;

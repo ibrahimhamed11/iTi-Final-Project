@@ -6,10 +6,14 @@ const vaccinationController = require('../controllers/vaccinationController');
 // Dashboard Page 
 //Add a vaccination
 router.post('/add', vaccinationController.createVaccination);
+// get  vaccines
+router.get('/getAll', vaccinationController.getAllVaccines);
+// get a vaccine by ID
+router.get('/:id', vaccinationController.getVaccineById);
 // Update a vaccination
-router.put('/:Id', vaccinationController.updateVaccination);
+router.put('/:id', vaccinationController.updateVaccination);
 // Delete a vaccination
-router.delete('/:Id', vaccinationController.deleteVaccination);
+router.delete('/:id', vaccinationController.deleteVaccination);
 
 //---------------------------------------------------------------------------------------------------
 

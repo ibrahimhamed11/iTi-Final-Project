@@ -20,6 +20,9 @@ router.get('/register',controllers.getRegister );
 // router.use(authMiddleware);
 router.get('/getallusers', controllers.getAllUsers);
 router.get('/getallmothers', controllers.getAllMothers);
+// add route for pregnants
+router.get('/getallpregnants', controllers.getAllPregnants);
+router.get('/getalladmins', controllers.getAllAdmins);
 router.get('/getallseller', controllers.getAllSeller);
 router.get('/getallsellernum', controllers.getNumberOfSellers);
 router.get('/getallmothernum', controllers.getNumberOfMothers);

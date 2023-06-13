@@ -1,15 +1,16 @@
 const orders = require('../Models/orders');
 
 exports.createOrder =async (req,res) => {
+    console.log(req.body)
     const {userId,productId,qty,shippingAdress,delStatus,date} = req.body;
     const order = new orders({userId,productId,qty,shippingAdress,delStatus,date});
     const savedOrder = await order.save();
-    res.status(201).json(savedOrder);
+    res.status(201).json({savedOrder , status:201});
 }
 
 exports.getAllOrders = async (req,res) => {
     const order = await orders.find()
-    res.send(order);
+    res.send({data:order});
 }
 
 exports.getById = async (req,res) => {

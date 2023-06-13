@@ -18,7 +18,8 @@ const vaccinationSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
-  },
+  }, 
+  
 });
 
 const Vaccination = mongoose.model('Vaccination', vaccinationSchema);
