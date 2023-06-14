@@ -27,7 +27,7 @@ exports.upload = multer({ storage: fileStorage });
 //Register
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, username, age,phone,address, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body.user;
+    const { name, email, password, username, age,phone,address, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -57,7 +57,7 @@ exports.createUser = async (req, res) => {
     });
     // Save the user to the database
     await newUser.save();
-    res.status(200).json({ message: 'User created successfully', status:200});
+    res.status(200).json({ message: 'User created successfully', status:200 ,data:newUser._id } );
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal error' });
