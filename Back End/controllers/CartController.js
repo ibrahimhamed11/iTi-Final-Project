@@ -4,6 +4,7 @@ const Cart = require('../Models/Cart');
 
 // Add item to cart
   exports.addItem =  async (req, res) => {
+    
   try {
     const { user, product, quantity } = req.body;
     const cartItem = await Cart.create({ user, product, quantity });
@@ -45,10 +46,10 @@ exports.userProducts =async (req, res) => {
     try {
       const userId = req.params.userId;
   
-      // Find all cart items for the user and populate the 'product' field
+      // Find all cart items for the user and populate the 'product' field 
       const cartItems = await Cart.find({ user: userId }).populate('product');
   
-      // Extract the product documents from the cart items
+      // Extract the product documents from the cart items   
       const products = cartItems.map(cartItem => cartItem.product);
   
       // Return the products as the response
