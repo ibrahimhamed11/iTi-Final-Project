@@ -10,8 +10,6 @@ const blogsRouter = require("./routes/BlogPost")
 const commentsRouter = require('./routes/comments');
 const todoRouter = require('./routes/todoRoute');
 const vaccinationRouter = require('./routes/vaccination');
-const CartRouter = require('./routes/cart');
-
 const app = express();
 const cors= require('cors');
 const path=require('path');
@@ -39,8 +37,6 @@ app.use('/todo',todoRouter);
 
 //vaccination 
 app.use('/vaccination',vaccinationRouter);
-app.use('/cart',CartRouter);
-
 
 
 //charts

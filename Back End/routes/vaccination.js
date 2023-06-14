@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const vaccinationController = require('../controllers/vaccinationController');
-router.get('/test',async(req,res)=>{
-    console.log("object");    res.send("SS    ")
-    })
+
 // Dashboard Page 
 //Add a vaccination
 router.post('/add', vaccinationController.createVaccination);

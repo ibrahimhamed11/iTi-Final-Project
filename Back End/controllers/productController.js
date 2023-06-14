@@ -22,14 +22,14 @@ exports.addProduct = (req, res) => {
 
         
 
-    const {name,price,description,category,stock,image,rate ,seller}= req.body
+    const {name,price,description,category,stock,image,reviews,seller}= req.body
     const product = new products({
       name,
       price,
       description,
       category,stock,
-      image: req.file,
-      rate,
+      image: req.file.filename,
+      reviews,
       seller})
     product.save().then(product=> {
         res.status(201).json(product)
