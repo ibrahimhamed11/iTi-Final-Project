@@ -71,6 +71,7 @@ exports.loginUser = async function (req, res) {
     // Find user by email
     const email = req.body.email;
     let user = await User.findOne({ email: email });
+
     if (user) {
       // Compare the password
 
@@ -80,13 +81,14 @@ exports.loginUser = async function (req, res) {
       if (isEqual) {
         // Generate a JWT token
 
-        let payload = { userId: user };
+        let payload = { userId: user._id };
         let token = jwt.sign(payload, key);
 
         // Set the token as a cookie and redirect to the home page
         res.cookie('token', token, { maxAge: 900000, httpOnly: true });
+        console.log(payload);
         // res.redirect('getallusers');
-        res.status(200).json({data:{token:token,user},status:200})
+        res.status(200).json({data:{token:token,user:user.name},status:200})
       } 
     } else {
       res.status(401).json({ error: 'Invalid email or password' });
@@ -114,7 +116,6 @@ exports.getUser = async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await User.findById(userId);
-
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
