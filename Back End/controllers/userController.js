@@ -325,12 +325,12 @@ exports.getMotherRegisteredPerDay = async (req, res) => {
     // The result will be an array of objects with the format { _id: 'yyyy-mm-dd', count: <number> }
 
     // Convert the array of objects into an object with dates as keys and counts as values
-    result.forEach((item) => {
-      registrations[item._id] = item.count;
-    });
+    // result.forEach((item) => {
+    //   registrations[item._id] = item.count;
+    // });
 
     // Send the registrations object as the response
-    res.json(registrations);
+    res.json({data:result});
 
   } catch (error) {
     console.log(registrations);
@@ -360,12 +360,12 @@ exports.getPregnantRegisteredPerDay = async (req, res) => {
 
 
     // Convert the array of objects into an object with dates as keys and counts as values
-    result.forEach((item) => {
-      registrations[item._id] = item.count;
-    });
+    // result.forEach((item) => {
+    //   registrations[item._id] = item.count;
+    // });
 
     // Send the registrations object as the response
-    res.json(registrations);
+    res.json({data:result});
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
@@ -393,12 +393,12 @@ exports.getSellerRegisteredPerDay = async (req, res) => {
 
 
     // Convert the array of objects into an object with dates as keys and counts as values
-    result.forEach((item) => {
-      registrations[item._id] = item.count;
-    });
+    // result.forEach((item) => {
+    //   registrations[item._id] = item.count;
+    // });
 
     // Send the registrations object as the response
-    res.json(registrations);
+    res.json({data:result});
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
