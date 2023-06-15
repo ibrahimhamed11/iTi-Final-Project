@@ -1,7 +1,8 @@
 const Vaccination = require('../Models/vaccination');
 
 
-exports.getVaccineById = async (req,res) => {
+exports.getVaccineById = async (req,res) => { 
+  
   const { vaccinationId } = req.params;
 
   const vaccine = await Vaccination.findById(vaccinationId);

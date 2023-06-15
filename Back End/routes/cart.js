@@ -9,15 +9,15 @@ router.post('/add', cartController.addItem );
 // Update item quantity in cart
 router.put('/edit/:id',cartController.updateItem);
 
-// Remove item from cart
+// \Remove item from cart
 router.delete('/remove/:id',cartController.deleteItem);
 
-// Checkout cart
+//Checkout cart
 router.post('/checkout',cartController.checkoutCart);
 
 
 
-
+// get products for one user
 
 router.get('/users/:userId/carts',cartController.userProducts );
   

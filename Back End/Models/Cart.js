@@ -23,7 +23,8 @@ const CartSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
+// kfjdfndkf
 
 const Cart = mongoose.model('cart', CartSchema);
+
 module.exports = Cart

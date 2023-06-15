@@ -6,7 +6,7 @@ router.get('/test',async(req,res)=>{
     console.log("object");    res.send("SS    ")
     })
 // Dashboard Page 
-//Add a vaccination
+//Add a vaccinationnn 
 router.post('/add', vaccinationController.createVaccination);
 // get  vaccines
 router.get('/getAll', vaccinationController.getAllVaccines);
