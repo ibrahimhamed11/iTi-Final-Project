@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
       message: 'Invalid email address'
     }
   },
+  image: {
+    type: String
+
+  },
   registrationDate: {
     type: Date,
     default: Date.now // Set the default value to the current date and time
@@ -42,7 +46,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     // required: true,
     validate: {
-      validator: function(numOfBaby) {
+      validator: function (numOfBaby) {
         return numOfBaby >= 0;
       },
       message: 'Number of babies cannot be negative'

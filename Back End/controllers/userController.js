@@ -27,7 +27,7 @@ exports.upload = multer({ storage: fileStorage });
 //Register
 exports.createUser = async (req, res) => {
   try {
-    const { name, email, password, username, age,phone,address, numOfBaby, isPregnant, pregnancyMonth, babyWeight ,role} = req.body.user;
+    const { name, email, password, username, age, phone, address, numOfBaby, isPregnant, pregnancyMonth, babyWeight, role } = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -38,7 +38,7 @@ exports.createUser = async (req, res) => {
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    // const hashedPassword ="testtesttesttest";
+    ///const hashedPassword ="testtesttesttest";
     // Create a new user
     const newUser = new User({
       name,
@@ -53,11 +53,11 @@ exports.createUser = async (req, res) => {
       pregnancyMonth,
       babyWeight,
       role,
-      // image: req.file.filename,
+      image: req.file.filename,
     });
     // Save the user to the database
     await newUser.save();
-    res.status(200).json({ message: 'User created successfully', status:200});
+    res.status(200).json({ message: 'User created successfully', status: 200 });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({ error: 'Internal error' });
@@ -88,8 +88,8 @@ exports.loginUser = async function (req, res) {
         res.cookie('token', token, { maxAge: 900000, httpOnly: true });
         console.log(payload);
         // res.redirect('getallusers');
-        res.status(200).json({data:{token:token,user:user.name},status:200})
-      } 
+        res.status(200).json({ data: { token: token, user: user.name }, status: 200 })
+      }
     } else {
       res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -100,12 +100,12 @@ exports.loginUser = async function (req, res) {
 };
 
 // get login  
-exports.getlogin =async(req, res) => {
+exports.getlogin = async (req, res) => {
   res.sendFile(path.join(__dirname, '../public/login.html'));
 }
 
 // get register  
-exports.getRegister =async(req, res) => {
+exports.getRegister = async (req, res) => {
   res.sendFile(path.join(__dirname, '../public/register.html'));
 }
 
@@ -121,7 +121,7 @@ exports.getUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json({ data:user });
+    res.status(200).json({ data: user });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -140,7 +140,7 @@ exports.updateUser = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.status(200).json({updatedUser , status:200});
+    res.status(200).json({ updatedUser, status: 200 });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
   }
@@ -175,7 +175,7 @@ exports.getAllUsers = async (req, res) => {
 exports.getAllMothers = async (req, res) => {
   try {
     // Find all users in the database
-    const mothers = await User.find({role :"mother"});
+    const mothers = await User.find({ role: "mother" });
 
     res.status(200).json({ mothers });
   } catch (error) {
@@ -187,7 +187,7 @@ exports.getAllMothers = async (req, res) => {
 exports.getAllPregnants = async (req, res) => {
   try {
     // Find all users in the database
-    const pregnants = await User.find({role :"pregnant"});
+    const pregnants = await User.find({ role: "pregnant" });
 
     res.status(200).json({ pregnants });
   } catch (error) {
@@ -200,7 +200,7 @@ exports.getAllPregnants = async (req, res) => {
 exports.getAllAdmins = async (req, res) => {
   try {
     // Find all users in the database
-    const admins = await User.find({role :"admin"});
+    const admins = await User.find({ role: "admin" });
 
     res.status(200).json({ admins });
   } catch (error) {
@@ -215,13 +215,13 @@ exports.getAllAdmins = async (req, res) => {
 exports.getAllSeller = async (req, res) => {
   try {
     // Find all users in the database
-    const sellers = await User.find({role:"seller"});
+    const sellers = await User.find({ role: "seller" });
 
     res.status(200).json({ sellers });
   } catch (error) {
     console.error('Error retrieving sellers:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 
@@ -229,13 +229,13 @@ exports.getAllSeller = async (req, res) => {
 exports.getAllpregnant = async (req, res) => {
   try {
     // Find all users in the database
-    const pregnants = await User.find({role:"pregnant"});
+    const pregnants = await User.find({ role: "pregnant" });
 
     res.status(200).json({ pregnants });
   } catch (error) {
     console.error('Error retrieving pregnants:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 
@@ -330,7 +330,7 @@ exports.getMotherRegisteredPerDay = async (req, res) => {
     // });
 
     // Send the registrations object as the response
-    res.json({data:result});
+    res.json({ data: result });
 
   } catch (error) {
     console.log(registrations);
@@ -365,7 +365,7 @@ exports.getPregnantRegisteredPerDay = async (req, res) => {
     // });
 
     // Send the registrations object as the response
-    res.json({data:result});
+    res.json({ data: result });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
@@ -398,8 +398,8 @@ exports.getSellerRegisteredPerDay = async (req, res) => {
     // });
 
     // Send the registrations object as the response
-    res.json({data:result});
+    res.json({ data: result });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
+    res.status(500).json({ error: 'Server error' });
+  }
 };

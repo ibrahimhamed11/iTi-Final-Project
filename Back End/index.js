@@ -11,8 +11,8 @@ const commentsRouter = require('./routes/comments');
 const todoRouter = require('./routes/todoRoute');
 const vaccinationRouter = require('./routes/vaccination');
 const app = express();
-const cors= require('cors');
-const path=require('path');
+const cors = require('cors');
+const path = require('path');
 
 
 // Middleware
@@ -22,27 +22,27 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(bodyparser.urlencoded({ extended: true }));
 // app.use(bodyparser.json());
 // Routes
- app.use('/user',usersRouter);
+app.use('/user', usersRouter);
 
 //Products router
- app.use('/products',productRouter)
- app.use('/blogs',blogsRouter)
- app.use('/comments',commentsRouter)
+app.use('/products', productRouter)
+app.use('/blogs', blogsRouter)
+app.use('/comments', commentsRouter)
 
 //Orders Route 
-app.use('/orders',ordersRouter);
+app.use('/orders', ordersRouter);
 
 //Todo Route 
-app.use('/todo',todoRouter);
+app.use('/todo', todoRouter);
 
 //vaccination 
-app.use('/vaccination',vaccinationRouter);
+app.use('/vaccination', vaccinationRouter);
 
 
 //charts
-app.use('/charts',chartsRouter);
+app.use('/charts', chartsRouter);
 //vaccination 
-app.use('/vaccination',vaccinationRouter);
+app.use('/vaccination', vaccinationRouter);
 
 // Start the server
 const port = 4000;

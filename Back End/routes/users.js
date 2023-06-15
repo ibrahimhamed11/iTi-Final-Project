@@ -11,11 +11,11 @@ const router = express.Router();
 
 
 
-router.post('/register', controllers.createUser);
+router.post('/register', controllers.upload.single('image'), controllers.createUser);
 router.post('/login', controllers.loginUser);
 // Define a route for the login page
-router.get('/login',controllers.getlogin );
-router.get('/register',controllers.getRegister );
+router.get('/login', controllers.getlogin);
+router.get('/register', controllers.getRegister);
 // router.use(loginAuth);
 // router.use(authMiddleware);
 router.get('/getallusers', controllers.getAllUsers);
