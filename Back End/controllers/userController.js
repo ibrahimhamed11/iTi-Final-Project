@@ -88,7 +88,7 @@ exports.loginUser = async function (req, res) {
         res.cookie('token', token, { maxAge: 900000, httpOnly: true });
         console.log(payload);
         // res.redirect('getallusers');
-        res.status(200).json({ data: { token: token, user: user.name }, status: 200 })
+        res.status(200).json({ data: { token: token, user: user }, status: 200 })
       }
     } else {
       res.status(401).json({ error: 'Invalid email or password' });

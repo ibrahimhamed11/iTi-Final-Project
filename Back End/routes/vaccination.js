@@ -4,7 +4,7 @@ const router = express.Router();
 const vaccinationController = require('../controllers/vaccinationController');
 
 // Dashboard Page 
-//Add a vaccination
+//Add a vaccinationnn 
 router.post('/add', vaccinationController.createVaccination);
 // get  vaccines
 router.get('/getAll', vaccinationController.getAllVaccines);

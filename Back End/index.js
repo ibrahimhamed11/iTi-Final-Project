@@ -3,7 +3,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const usersRouter = require('./routes/users');
 const chartsRouter = require('./routes/charts');
-
+const CartRouter = require('./routes/cart')
 const productRouter = require('./routes/productsRouter');
 const ordersRouter = require('./routes/ordersRouter')
 const blogsRouter = require("./routes/BlogPost")
@@ -35,8 +35,12 @@ app.use('/orders', ordersRouter);
 //Todo Route 
 app.use('/todo', todoRouter);
 
-//vaccination 
-app.use('/vaccination', vaccinationRouter);
+
+// vaccination 
+app.use('/vaccination',vaccinationRouter);
+app.use('/cart',CartRouter);
+
+
 
 
 //charts

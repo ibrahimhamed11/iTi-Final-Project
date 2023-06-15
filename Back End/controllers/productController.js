@@ -46,7 +46,8 @@ exports.getAllProducts = async (req,res) => {
 
 //Get product by it`s id
 exports.getById = async (req,res) => {
-    const product = await products.findById(req.params.id);
+    const product = await products.findById(req.params._id);
+    console.log(product)
     res.send(product)
 }
 
