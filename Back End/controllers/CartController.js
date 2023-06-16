@@ -51,15 +51,27 @@ exports.userProducts =async (req, res) => {
       // Find all cart items for the user and populate the 'product' field 
       const cartItems = await Cart.find({ user: userId }).populate('product');
   
-      // Extract the product documents from the cart items   
-      const products = cartItems.map(cartItem => cartItem.product);
-  
-      // Return the products as the response
-      res.json(products);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Server error' });
-    }
+     
+    // Create an array to store the products and their quantities
+    const products = [];
+    
+    // Loop through each cart item and add the product to the products array with its quantity
+    cartItems.forEach((cartItem) => {
+      const product = cartItem.product;
+      const quantity = cartItem.quantity;
+      
+      products.push({
+        ...product.toObject(),
+        quantity: quantity
+      });
+    });
+    
+    // Return the products with their quantities as the response
+    res.json(products);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
   }
 
 
