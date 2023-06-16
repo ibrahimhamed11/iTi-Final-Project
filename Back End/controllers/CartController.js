@@ -23,8 +23,11 @@ exports.updateItem= async (req, res) => {
   try {
     const { id } = req.params;
     const { quantity } = req.body;
-    const cartItem = await Cart.findByIdAndUpdate(id, { quantity }, { new: true });
+    const cartItem = await Cart.findOneAndUpdate({product: id}, {quantity: quantity});
+    console.log(quantity)
+    console.log(cartItem)
     res.json(cartItem);
+    console.log(quantity)
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });

@@ -7,7 +7,7 @@ const cartController = require('../controllers/CartController');
 router.post('/add', cartController.addItem );
 
 // Update item quantity in cart
-router.put('/edit/:id',cartController.updateItem);
+router.patch('/:id',cartController.updateItem);
 
 // \Remove item from cart
 router.delete('/:id',cartController.deleteItem);

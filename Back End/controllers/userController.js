@@ -17,7 +17,7 @@ const fileStorage = multer.diskStorage({
     callback(null, 'uploads/');
   },
   filename: (req, file, callback) => {
-    const fileName = Date.now() + file.originalname.replace(/ /g, '');
+    const fileName = Date.now() + file.originalname.replace(/ /g, '') || "";
     callback(null, fileName);
   }
 });
@@ -53,7 +53,7 @@ exports.createUser = async (req, res) => {
       pregnancyMonth,
       babyWeight,
       role,
-      image: req.file.filename,
+      // image: req.file.filename,
     });
     // Save the user to the database
     await newUser.save();
