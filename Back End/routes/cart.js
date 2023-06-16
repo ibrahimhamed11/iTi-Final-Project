@@ -10,7 +10,7 @@ router.post('/add', cartController.addItem );
 router.put('/edit/:id',cartController.updateItem);
 
 // \Remove item from cart
-router.delete('/remove/:id',cartController.deleteItem);
+router.delete('/:id',cartController.deleteItem);
 
 //Checkout cart
 router.post('/checkout',cartController.checkoutCart);
@@ -19,7 +19,7 @@ router.post('/checkout',cartController.checkoutCart);
 
 // get products for one user
 
-router.get('/users/:userId/carts',cartController.userProducts );
+router.get('/:userId',cartController.userProducts );
   
 
 

@@ -8,6 +8,7 @@ const Cart = require('../Models/Cart');
   try {
     const { user, product, quantity } = req.body;
     const cartItem = await Cart.create({ user, product, quantity });
+    console.log(cartItem);
     res.status(201).json(cartItem);
   } catch (err) {
     console.error(err);
@@ -33,7 +34,8 @@ exports.updateItem= async (req, res) => {
 exports.deleteItem= async (req, res) => {
   try {
     const { id } = req.params;
-    await Cart.findByIdAndDelete(id);
+   const item = await Cart.findOneAndDelete({product: id});
+   console.log(item)
     res.sendStatus(204);
   } catch (err) {
     console.error(err);
