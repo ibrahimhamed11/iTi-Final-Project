@@ -16,28 +16,7 @@ exports.getAllVaccines = async (req, res) => {
 }
 
 
-// exports.createVaccination = async (req, res) => {
-//   const { name, date, min, max, delete_time } = req.body;
-
-//   const vaccination = new Vaccination({
-//     name,
-//     date,
-//     min,
-//     max,
-//     delete_time
-//   });
-
-
-//   try {
-//     const savedVaccination = await vaccination.save();
-//     res.status(201).json({ data: savedVaccination, status: 200 });
-//   } catch (error) {
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// };
-
-
-
+//new vaccination and push this to all mothers have babies
 exports.createVaccination = async (req, res) => {
   try {
     const { name, date, min, max, delete_time } = req.body;
