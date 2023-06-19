@@ -1,47 +1,102 @@
 const Vaccination = require('../Models/vaccination');
+const User = require('../Models/Users');
 
 
-exports.getVaccineById = async (req,res) => { 
-  
+exports.getVaccineById = async (req, res) => {
+
   const { vaccinationId } = req.params;
 
   const vaccine = await Vaccination.findById(vaccinationId);
   console.log(vaccine)
-  res.send({data:vaccine})
+  res.send({ data: vaccine })
 }
-exports.getAllVaccines = async (req,res) => {
+exports.getAllVaccines = async (req, res) => {
   const vaccines = await Vaccination.find()
   res.send(vaccines);
 }
 
 
+// exports.createVaccination = async (req, res) => {
+//   const { name, date, min, max, delete_time } = req.body;
+
+//   const vaccination = new Vaccination({
+//     name,
+//     date,
+//     min,
+//     max,
+//     delete_time
+//   });
+
+
+//   try {
+//     const savedVaccination = await vaccination.save();
+//     res.status(201).json({ data: savedVaccination, status: 200 });
+//   } catch (error) {
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
+
+
+
 exports.createVaccination = async (req, res) => {
-  const { name, date, minAge, maxAge } = req.body;
-
-  const vaccination = new Vaccination({
-    name,
-    date,
-    minAge,
-    maxAge,
-  });
-
-
   try {
-    const savedVaccination = await vaccination.save();
-    res.status(201).json({ data: savedVaccination, status: 200 });
+    const { name, date, min, max, delete_time } = req.body;
+
+    // Find all users with the role 'mother'
+    const users = await User.find({ role: 'mother' });
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'No users with the role "mother" found' });
+    }
+
+    // Iterate through each user and add the new vaccination to their baby profiles
+    for (const user of users) {
+      // Check if the user has any baby information
+      if (!user.profile.babyInfo || user.profile.babyInfo.length === 0) {
+        continue; // Skip this user and move to the next one
+      }
+
+      // Iterate through each baby info and add the new vaccination
+      for (const babyInfo of user.profile.babyInfo) {
+        // Check if the age of the vaccination is less than the baby's age
+        if (babyInfo.age < max) {
+          // Create a new vaccination object
+          const newVaccination = {
+            name,
+            date,
+            min,
+            max,
+            delete_time
+          };
+
+          // Add the new vaccination to the baby's profile
+          babyInfo.vaccination.push(newVaccination);
+        }
+      }
+
+      // Save the updated user object
+      await user.save();
+    }
+
+    res.status(201).json({ message: 'Vaccination added to all babies of users with the role "mother"', status: 201 });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error creating vaccination:', error);
+    res.status(500).json({ error: 'Internal error' });
   }
 };
+
+
+
+
 
 exports.updateVaccination = async (req, res) => {
   try {
     const { vaccinationId } = req.params;
-    const { name, date, minAge, maxAge } = req.body;
+    const { name, min, max, delete_time } = req.body;
 
     const updatedVaccination = await Vaccination.findOneAndUpdate(
       { _id: vaccinationId },
-      { name, date, minAge, maxAge },
+      { name, min, max, delete_time },
     );
     console.log();
 
@@ -55,14 +110,20 @@ exports.updateVaccination = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
 exports.getVaccinationsForMother = async (req, res) => {
   try {
     const motherId = req.params.motherId;
-    const { minAge, maxAge } = req.body;
+    const { min, max } = req.body;
 
     const vaccinations = await Vaccination.find({
       motherId,
-      babyAge: { $gte: minAge, $lte: maxAge },
+      babyAge: { $gte: min, $lte: max },
     });
 
     res.json(vaccinations);

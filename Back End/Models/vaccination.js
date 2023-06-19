@@ -7,19 +7,27 @@ const vaccinationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  maxAge: {
+  max: {
     type: Number,
     required: true,
   },
-  minAge: {
+  min: {
     type: Number,
     required: true,
   },
   date: {
     type: Date,
-    required: true,
-  }, 
-  
+    default: Date.now
+  },
+  status: {
+    type: Boolean,
+    default: false
+  },
+  delete_time:
+  {
+    type: Number,
+  }
+
 });
 
 const Vaccination = mongoose.model('Vaccination', vaccinationSchema);
