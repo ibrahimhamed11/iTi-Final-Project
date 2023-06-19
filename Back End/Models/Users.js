@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const Product = require('./products')
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -59,6 +60,10 @@ const userSchema = new mongoose.Schema({
     // default: function() {
     //   return this.numOfBaby === 0 ? 'pregnant' : 'mother';
     // }
+  },
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
   },
   // pregnancyMonth: {
   //   type: Number

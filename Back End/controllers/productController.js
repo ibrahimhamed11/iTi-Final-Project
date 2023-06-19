@@ -1,12 +1,13 @@
 const products = require('../Models/products')
 const multer = require('multer');
 const date = require('date-and-time');
+const User = require('../Models/Users');
 
 
 // Configure multer for file storage
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'uploads/');
+    callback(null, './uploads/');
   },
   filename: (req, file, callback) => {
     const fileName = Date.now() + file.originalname.replace(/ /g, '');
@@ -42,6 +43,20 @@ exports.addProduct = (req, res) => {
 exports.getAllProducts = async (req,res) => {
     const product = await products.find()
     res.send(product);
+}
+
+//Get Seller`s products \
+exports.getSellerProducts = async (req,res) => {
+  const _id = req.params.id
+  console.log(_id)
+  try {
+      const product = await products.find({seller: _id})
+      console.log(product)
+      res.send(product)
+  }
+  catch(error){
+    console.log(error)
+  }
 }
 
 //Get product by it`s id
