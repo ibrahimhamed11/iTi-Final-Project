@@ -53,7 +53,7 @@ exports.createUser = async (req, res) => {
       pregnancyMonth,
       babyWeight,
       role,
-      // image: req.file.filename,
+      image: req.file.filename,
     });
     // Save the user to the database
     await newUser.save();

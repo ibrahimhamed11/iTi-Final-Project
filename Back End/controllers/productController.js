@@ -21,15 +21,15 @@ exports.upload = multer({ storage: fileStorage });
 
 exports.addProduct = (req, res) => {
 
-        
 
-    const {name,price,description,category,stock,image,reviews,seller}= req.body
+    const {description,name,price,category,stock,rate,reviews,seller}= req.body
     const product = new products({
       name,
       price,
       description,
       category,stock,
       image: req.file.filename,
+      rate,
       reviews,
       seller})
     product.save().then(product=> {
