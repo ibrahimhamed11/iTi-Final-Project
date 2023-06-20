@@ -5,21 +5,13 @@ const bcrypt = require('bcryptjs');
 const BlogPost = require('../Models/BlogPost');
 const multer = require('multer');
 const date = require('date-and-time');
-
-
-
-
-
-
-
-
-
+const blogPost = require('../Models/BlogPost');
 
 
 // Configure multer for file storage
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'uploads/');
+    callback(null, './uploads/');
   },
   filename: (req, file, callback) => {
     const fileName = Date.now() + file.originalname.replace(/ /g, '');
@@ -31,15 +23,16 @@ exports.upload = multer({ storage: fileStorage });
 
 // Create a new blog post
 exports.createBlog= async (req, res) => {
+console.log(req.body)
   try {
     const blogPost = new BlogPost({
       title: req.body.title,
       content: req.body.content,
-      author: req.user.id,
+      user: req.body.author,
       image: req.file.filename,
     });
-
     const savedBlogPost = await blogPost.save();
+    console.log(savedBlogPost)
     res.status(201).json(savedBlogPost);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -49,7 +42,7 @@ exports.createBlog= async (req, res) => {
 // Get all blog posts
 exports.getAllBlogs= async (req, res) => {
   try {
-    const blogPosts = await BlogPost.find().populate('author', 'name');
+    const blogPosts = await BlogPost.find();
     res.json(blogPosts);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -57,7 +50,19 @@ exports.getAllBlogs= async (req, res) => {
 };
 
 // Get a single blog post
-exports.getBlog= (req, res) =>  res.json(res.blogPost);
+exports.getBlog= async (req, res) => {
+ 
+  try {
+    const _id = req.params.id
+    console.log(_id)
+    const blog = await blogPost.findById(_id)
+    console.log(blog)
+    res.send(blog)
+  }catch (error) {
+    console.log(error)
+  }
+}
+ 
 
 
 // Update a blog post
@@ -91,7 +96,8 @@ exports.deleteBlog= async (req, res) => {
 // Middleware function to get a single blog post by ID
  exports.getBlogPostasync = async(req, res, next) =>{
   try {
-    const blogPost = await BlogPost.findById(req.params.id).populate('author', 'name');
+    console.log(req.params.id)
+    const blogPost = await BlogPost.findById(req.params.id).populate('author');
     if (blogPost == null) {
       return res.status(404).json({ message: 'Cannot find blog post' });
     }

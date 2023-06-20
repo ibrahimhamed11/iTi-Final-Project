@@ -13,9 +13,9 @@ const blogPostSchema = new mongoose.Schema({
   },
   image: {
     type: String, // Assuming the image is stored as a file path or URL
-    required: true
+    required: false
   },
-  author: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true

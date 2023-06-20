@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../controllers/auth');
-const BlogsController  = require('../controllers/blogPost');
-router.post('/', authMiddleware.authenticateToken,BlogsController.upload.single('image') , BlogsController.createBlog)
-router.get('/',BlogsController.getAllBlogs) 
+const BlogsController  = require('../controllers/BlogPost');
+router.post('/add',BlogsController.upload.single('image') , BlogsController.createBlog)
+router.get('/get',BlogsController.getAllBlogs) 
 router.get('/:id', BlogsController.getBlog)
-router.patch('/:id', authMiddleware.getBlogPostasync, BlogsController.updateBlog)
-router.delete('/:id', authMiddleware.getBlogPostasync, BlogsController.deleteBlog)
+router.patch('/:id', BlogsController.updateBlog)
+router.delete('/:id',BlogsController.deleteBlog)
 
 module.exports = router;
