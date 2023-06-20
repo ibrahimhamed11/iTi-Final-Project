@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../controllers/auth');
-const BlogsController  = require('../controllers/blogPost');
-router.post('/',BlogsController.upload.single('image') , BlogsController.createBlog)
-router.get('/',BlogsController.getAllBlogs) 
+const BlogsController  = require('../controllers/BlogPost');
+router.post('/add',BlogsController.upload.single('image') , BlogsController.createBlog)
+router.get('/get',BlogsController.getAllBlogs) 
 router.get('/:id', BlogsController.getBlog)
 router.patch('/:id', BlogsController.updateBlog)
 router.delete('/:id',BlogsController.deleteBlog)
