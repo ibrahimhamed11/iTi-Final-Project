@@ -20,47 +20,47 @@ exports.getAllVaccines = async (req, res) => {
 exports.createVaccination = async (req, res) => {
   try {
     const { name, date, min, max, delete_time } = req.body;
-   
+
     // Save the vaccine in  vaccination schema 
-    
-      // Find all users with the role 'mother'
-      const users = await User.find({ role: 'mother' });
 
-      if (users.length === 0) {
-        return res.status(404).json({ error: 'No users with the role "mother" found' });
+    // Find all users with the role 'mother'
+    const users = await User.find({ role: 'mother' });
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'No users with the role "mother" found' });
+    }
+
+    // Iterate through each user and add the new vaccination to their baby profiles
+    for (const user of users) {
+      // Check if the user has any baby information
+      if (!user.profile.babyInfo || user.profile.babyInfo.length === 0) {
+        continue; // Skip this user and move to the next one
       }
 
-      // Iterate through each user and add the new vaccination to their baby profiles
-      for (const user of users) {
-        // Check if the user has any baby information
-        if (!user.profile.babyInfo || user.profile.babyInfo.length === 0) {
-          continue; // Skip this user and move to the next one
-        }
+      // Iterate through each baby info and add the new vaccination
+      for (const babyInfo of user.profile.babyInfo) {
+        // Check if the age of the vaccination is less than the baby's age
+        if (babyInfo.age < max) {
+          // Create a new vaccination object
+          const newVaccination = new Vaccination({
+            name,
+            date,
+            min,
+            max,
+            delete_time
+          });
 
-        // Iterate through each baby info and add the new vaccination
-        for (const babyInfo of user.profile.babyInfo) {
-          // Check if the age of the vaccination is less than the baby's age
-          if (babyInfo.age < max) {
-            // Create a new vaccination object
-            const newVaccination = new Vaccination({
-              name,
-              date,
-              min,
-              max,
-              delete_time
-            });
-        
 
-            // Add the new vaccination to the baby's profile
-            babyInfo.vaccination.push(newVaccination);
+          // Add the new vaccination to the baby's profile
+          babyInfo.vaccination.push(newVaccination);
 
-          }          // Save the updated user object
-          await user.save();
+        }          // Save the updated user object
+        await user.save();
 
-        }
-        res.status(201).json({ message: 'Vaccination added to all babies of users with the role "mother"', status: 201 });
       }
-    } catch (error) {
+      res.status(201).json({ message: 'Vaccination added to all babies of users with the role "mother"', status: 201 });
+    }
+  } catch (error) {
     console.error('Error creating vaccination:', error);
     res.status(500).json({ error: 'Internal error' });
   }

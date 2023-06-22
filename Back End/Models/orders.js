@@ -3,30 +3,31 @@ const mongoose = require('mongoose');
 
 //Creating orders schema
 const orderSchema = new mongoose.Schema({
-    // userId:{type: mongoose.Types.ObjectId, ref:'User', required:true},
-    // productId:{type: mongoose.Types.ObjectId, ref:'products' , required: true},
-    qty: {type: Number, required: true},
-    // shippingAdress:{
-    //     street:{type: String, required: true},
-    //     city:{type: String, required: true},
-    //     zipCode:{type: String, required: true},
-    //     country:{type: String, required: true}
-    // },
-    delStatus:{
+    productName: { type: String, required: true },
+    userId: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+    productId: { type: mongoose.Types.ObjectId, ref: 'products', required: true },
+    qty: { type: Number, required: false },
+    shippingAdress: {
+        street: { type: String, required: false },
+        city: { type: String, required: false },
+        zipCode: { type: String, required: false },
+        country: { type: String, required: false }
+    },
+    delStatus: {
         type: String,
-        enum: ['pending','in progress','delivered','canceled' ],
+        enum: ['pending', 'delivered', 'canceled'],
         default: 'pending'
     },
     // payMethod:{type: String}, to be handeld later
-    date:{type: Date, default: Date.now}
+    date: { type: Date, default: Date.now }
 
-},{
-    strict:false,
-    versionKey:false,
-  })
+}, {
+    strict: false,
+    versionKey: false,
+})
 
-const orders= mongoose.model('orders', orderSchema);
+const orders = mongoose.model('orders', orderSchema);
 
 
 
-module.exports= orders;
+module.exports = orders;
