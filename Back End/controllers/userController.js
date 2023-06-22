@@ -14,7 +14,7 @@ const date = require('date-and-time');
 // Configure multer for file storage
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, 'uploads/');
+    callback(null, './uploads/');
   },
   filename: (req, file, callback) => {
     const fileName = Date.now() + file.originalname.replace(/ /g, '') || "";
@@ -53,7 +53,7 @@ exports.createUser = async (req, res) => {
       pregnancyMonth,
       babyWeight,
       role,
-      image: req.file.filename,
+      image: req.file? req.file.filename: "./uploads/user.webp",
     });
     // Save the user to the database
     await newUser.save();

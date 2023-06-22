@@ -4,8 +4,7 @@ const todoController = require('../controllers/todoController');
 
 
 router.post('/add',todoController.addTask);
-router.get('/getAll', todoController.getAllTasks);
-router.get('/:id',todoController.getTaskById);
+router.get('/:id', todoController.getAllTasks);
 router.patch('/:id',todoController.editTask);
 router.delete('/:id',todoController.delTask);
 

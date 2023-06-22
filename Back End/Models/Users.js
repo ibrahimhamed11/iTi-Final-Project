@@ -1,16 +1,20 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const Product = require('./products')
+const Product = require('./products');
+const todo = require('./todoSchema');
+const Posts = require('./BlogPost');
+const Comments = require("./comments");
+const Orders = require('./orders');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: true
+    required: true
   },
   email: {
     type: String,
-    // required: true,
-    // unique: true,
+    required: true,
+    unique: true,
     validate: {
       validator: validator.isEmail,
       message: 'Invalid email address'
@@ -18,7 +22,6 @@ const userSchema = new mongoose.Schema({
   },
   image: {
     type: String
-
   },
   registrationDate: {
     type: Date,
@@ -76,7 +79,24 @@ const userSchema = new mongoose.Schema({
         reportFile: String
       }
     ]
+  },
+  todo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'todo'
+  },
+  blogs: {
+    type : mongoose.Schema.Types.ObjectId,
+    ref: "Posts"
+  },
+  comments:{
+    type : mongoose.Schema.Types.ObjectId,
+    ref: 'Comments'
+  },
+  orders : {
+    type: mongoose.Schema.Types.ObjectId,
+    ref :"Orders"
   }
+
 });
 
 const User = mongoose.model('User', userSchema);
