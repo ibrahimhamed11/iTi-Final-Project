@@ -1,5 +1,5 @@
 const express = require('express');
-const Notification = require('../Models/Notification');
+const Notification = require('../Models/notification');
 const io = require('../Socket').get();
 
 const app = express();

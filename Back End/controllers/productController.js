@@ -39,6 +39,7 @@ exports.addProduct = (req, res) => {
     });
 };
 
+
 //Get all products
 exports.getAllProducts = async (req, res) => {
   const product = await products.find();
@@ -76,6 +77,21 @@ exports.delProduct = async (req, res) => {
   const deleted = await products.findByIdAndDelete(req.params.id);
   res.send(deleted);
 };
+
+
+
+
+//Delete existing product by Id
+exports.delProduct = async (req, res) => {
+  const deleted = await products.findByIdAndDelete(req.params.id)
+  res.send(deleted)
+}
+
+//Delete all products 
+exports.delAllProducts = async (req, res) => {
+  const deleted = await products.deleteMany()
+  res.send(deleted)
+}
 
 //Delete all products
 exports.delAllProducts = async (req, res) => {
