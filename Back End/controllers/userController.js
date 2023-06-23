@@ -53,7 +53,7 @@ exports.createUser = async (req, res) => {
       pregnancyMonth,
       babyWeight,
       role,
-      image: req.file? req.file.filename: "./uploads/user.webp",
+      image: req.file ? req.file.filename : "./uploads/user.webp",
     });
     // Save the user to the database
     await newUser.save();
@@ -68,27 +68,24 @@ exports.createUser = async (req, res) => {
 
 exports.loginUser = async function (req, res) {
   try {
-    // Find user by email
     const email = req.body.email;
-    let user = await User.findOne({ email: email });
+    const password = req.body.password;
+
+    // Find user by email
+    const user = await User.findOne({ email: email });
 
     if (user) {
       // Compare the password
-
-      const password = req.body.password;
-      let isEqual = await bcrypt.compare(password, user.password);
+      const isEqual = await bcrypt.compare(password, user.password);
 
       if (isEqual) {
         // Generate a JWT token
+        const payload = { userId: user._id };
+        const token = jwt.sign(payload, key);
 
-        let payload = { userId: user._id };
-        let token = jwt.sign(payload, key);
-
-        // Set the token as a cookie and redirect to the home page
-        res.cookie('token', token, { maxAge: 900000, httpOnly: true });
-        console.log(payload);
-        // res.redirect('getallusers');
-        res.status(200).json({ data: { token: token, user: user }, status: 200 })
+        res.status(200).json({ token: token, user: user });
+      } else {
+        res.status(401).json({ error: 'Invalid email or password' });
       }
     } else {
       res.status(401).json({ error: 'Invalid email or password' });
@@ -98,6 +95,7 @@ exports.loginUser = async function (req, res) {
     res.status(500).json({ error: 'Error logging in user' });
   }
 };
+
 
 // get login  
 exports.getlogin = async (req, res) => {
