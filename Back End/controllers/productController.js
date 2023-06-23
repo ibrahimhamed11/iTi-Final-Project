@@ -1,83 +1,85 @@
-const products = require('../Models/products')
-const multer = require('multer');
-const date = require('date-and-time');
-const User = require('../Models/Users');
-
+const products = require("../Models/products");
+const multer = require("multer");
+const date = require("date-and-time");
+const User = require("../Models/Users");
 
 // Configure multer for file storage
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, './uploads/');
+    callback(null, "./uploads/");
   },
   filename: (req, file, callback) => {
-    const fileName = Date.now() + file.originalname.replace(/ /g, '');
+    const fileName = Date.now() + file.originalname.replace(/ /g, "");
     callback(null, fileName);
-  }
+  },
 });
 exports.upload = multer({ storage: fileStorage });
 
-
-
-
 exports.addProduct = (req, res) => {
-
-
-  const { description, name, price, category, stock, rate, reviews, seller } = req.body
+  const { description, name, price, category, stock, rate, reviews, seller } =
+    req.body;
   const product = new products({
     name,
     price,
     description,
-    category, stock,
+    category,
+    stock,
     image: req.file.filename,
     rate,
     reviews,
-    seller
-  })
-
-  product.save().then(product => {
-    console.log(product)
-
-    res.status(201).json(product)
-  }).catch(err => {
-    res.send(err)
-  })
-}
+    seller,
+  });
+  product
+    .save()
+    .then((product) => {
+      res.status(201).json(product);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
 
 
 //Get all products
 exports.getAllProducts = async (req, res) => {
-  const product = await products.find()
+  const product = await products.find();
   res.send(product);
-}
+};
 
 //Get Seller`s products \
 exports.getSellerProducts = async (req, res) => {
-  const _id = req.params.id
-  console.log(_id)
+  const _id = req.params.id;
+  console.log(_id);
   try {
-    const product = await products.find({ seller: _id })
-    console.log(product)
-    res.send(product)
+    const product = await products.find({ seller: _id });
+    console.log(product);
+    res.send(product);
+  } catch (error) {
+    console.log(error);
   }
-  catch (error) {
-    console.log(error)
-  }
-}
+};
 
 //Get product by it`s id
 exports.getById = async (req, res) => {
   const product = await products.findById(req.params._id);
-  console.log(product)
-  res.send(product)
-}
+  console.log(product);
+  res.send(product);
+};
 
 //Update existing product
 exports.updateProduct = async (req, res) => {
   const update = await products.findByIdAndUpdate(req.params.id, req.body);
-  console.log(update)
+  res.send(update);
+};
 
-  res.send(update)
-}
+//Delete existing product by Id
+exports.delProduct = async (req, res) => {
+  const deleted = await products.findByIdAndDelete(req.params.id);
+  res.send(deleted);
+};
+
+
+
 
 //Delete existing product by Id
 exports.delProduct = async (req, res) => {
@@ -91,27 +93,31 @@ exports.delAllProducts = async (req, res) => {
   res.send(deleted)
 }
 
+//Delete all products
+exports.delAllProducts = async (req, res) => {
+  const deleted = await products.deleteMany();
+  res.send(deleted);
+};
 
 //Product Rate
 exports.productRate = async (req, res) => {
   try {
     const product = await products.findById(req.params.id);
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({ error: "Product not found" });
     }
-    console.log('before');
+    console.log("before");
     const averageRate = calculateAverageRate(product.rate);
-    console.log('after');
+    console.log("after");
     res.json({ averageRate });
   } catch (error) {
-    console.error('Error calculating average rate:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error calculating average rate:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
-
-//use put or patch if user make rate update product rate  
-//find by id and update 
+//use put or patch if user make rate update product rate
+//find by id and update
 //  calculate the average rate
 function calculateAverageRate(rate) {
   let totalRate = 0;
@@ -128,8 +134,7 @@ function calculateAverageRate(rate) {
   return totalRate / numRate;
 }
 
-
-//Product Patch or update 
+//Product Patch or update
 exports.updateProductRate = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -137,7 +142,7 @@ exports.updateProductRate = async (req, res) => {
 
     const product = await products.findById(productId);
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({ error: "Product not found" });
     }
 
     product.rate.push(newRate);
@@ -147,7 +152,7 @@ exports.updateProductRate = async (req, res) => {
 
     res.json({ averageRate });
   } catch (error) {
-    console.error('Error updating product rate:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating product rate:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
