@@ -86,16 +86,16 @@ const userSchema = new mongoose.Schema({
     ref: 'todo'
   },
   blogs: {
-    type : mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Posts"
   },
-  comments:{
-    type : mongoose.Schema.Types.ObjectId,
+  comments: {
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Comments'
   },
-  orders : {
+  orders: {
     type: mongoose.Schema.Types.ObjectId,
-    ref :"Orders"
+    ref: "Orders"
   }
 
 });

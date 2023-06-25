@@ -81,7 +81,7 @@ exports.loginUser = async function (req, res) {
       if (isEqual) {
         // Generate a JWT token
 
-        let payload = { userId: user._id };
+        let payload = { userId: user._id, role: user.role };
         let token = jwt.sign(payload, key);
 
         // Set the token as a cookie and redirect to the home page
