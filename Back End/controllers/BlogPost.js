@@ -56,7 +56,6 @@ exports.getBlog= async (req, res) => {
     const _id = req.params.id
     console.log(_id)
     const blog = await blogPost.findById(_id)
-    console.log(blog)
     res.send(blog)
   }catch (error) {
     console.log(error)
