@@ -43,3 +43,15 @@ exports.delOrder = async (req, res) => {
     res.send(deleted)
 }
 
+
+// Get all orders for a selected user ID
+exports.getUserOrders = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const userOrders = await orders.find({ userId }).populate('_id');
+        res.json(userOrders);
+    } catch (error) {
+        console.error('Error fetching user orders:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
