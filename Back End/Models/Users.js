@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
-const Product = require('./products');
-const todo = require('./todoSchema');
-const Posts = require('./BlogPost');
+const mongoose = require("mongoose");
+const validator = require("validator");
+const Product = require("./products");
+const todo = require("./todoSchema");
+const Posts = require("./BlogPost");
 const Comments = require("./comments");
-const Orders = require('./orders');
+const Orders = require("./orders");
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
@@ -17,20 +17,20 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: validator.isEmail,
-      message: 'Invalid email address'
-    }
+      message: "Invalid email address",
+    },
   },
   image: {
-    type: String
+    type: String,
   },
   registrationDate: {
     type: Date,
-    default: Date.now // Set the default value to the current date and time
+    default: Date.now, // Set the default value to the current date and time
   },
   password: {
     type: String,
     required: true,
-    minlength: 6
+    minlength: 6,
   },
   username: {
     type: String,
@@ -45,61 +45,56 @@ const userSchema = new mongoose.Schema({
     default: 0,
   },
   address: {
-    type: String
+    type: String,
   },
   numOfBaby: {
     type: Number,
     // required: true,
-
   },
   role: {
     type: String,
     required: true,
-
   },
   product: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
+    ref: "Product",
   },
-  profile: {
-    babyInfo: [
-      {
-        name: String,
-        weight: Number,
-        height: Number,
-        headSize: Number,
-        age: Number,
-        temperature: Number,
-        vaccination: Array,
-        extraInfo: [
-          {
-            foodTracker: String,
-            kindOfFood: String
-          }
-        ],
-        reportFile: String
-      }
-    ]
-  },
+  babyInfo: [
+    {
+      name: String,
+      weight: Number,
+      height: Number,
+      headSize: Number,
+      birthDate: Date,
+      temperature: Number,
+      vaccination: Array,
+      extraInfo: [
+        {
+          foodTracker: String,
+          kindOfFood: String,
+        },
+      ],
+      reportFile: String,
+    },
+  ],
   todo: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'todo'
+    ref: "todo",
   },
   blogs: {
-    type : mongoose.Schema.Types.ObjectId,
-    ref: "Posts"
-  },
-  comments:{
-    type : mongoose.Schema.Types.ObjectId,
-    ref: 'Comments'
-  },
-  orders : {
     type: mongoose.Schema.Types.ObjectId,
-    ref :"Orders"
-  }
-
+    ref: "Posts",
+  },
+  comments: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Comments",
+  },
+  orders: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Orders",
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
