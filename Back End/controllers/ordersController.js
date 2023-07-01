@@ -55,3 +55,23 @@ exports.getUserOrders = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+
+exports.updateCheckRate = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const { checkRate } = req.body;
+
+        // Update the checkRate field of the order in your database using Mongoose or any other ORM
+        const order = await orders.findByIdAndUpdate(orderId, { checkRate });
+
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        return res.status(200).json({ message: 'Rate added successfully' });
+    } catch (error) {
+        console.error('Error updating checkRate:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};

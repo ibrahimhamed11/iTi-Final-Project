@@ -65,14 +65,14 @@ exports.getById = async (req, res) => {
 
 //Update existing product
 exports.updateProduct = async (req, res) => {
-  try{
-  console.log(req.body)
-  const update = await products.findByIdAndUpdate(req.params.id,{...req.body});
-console.log(update)
- res.send(update);
-}catch(error) {
-  console.log(error)
-}
+  try {
+    console.log(req.body)
+    const update = await products.findByIdAndUpdate(req.params.id, { ...req.body });
+    console.log(update)
+    res.send(update);
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 //Delete existing product by Id

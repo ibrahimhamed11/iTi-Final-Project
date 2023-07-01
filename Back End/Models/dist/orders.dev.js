@@ -49,7 +49,12 @@ var orderSchema = new mongoose.Schema({
   date: {
     type: Date,
     "default": Date.now
-  }
+  },
+  checkRate: {
+    type: Boolean,
+    "default": false
+  } // New field for check rate
+
 }, {
   strict: false,
   versionKey: false

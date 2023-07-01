@@ -187,3 +187,51 @@ exports.getUserOrders = function _callee6(req, res) {
     }
   }, null, null, [[0, 8]]);
 };
+
+exports.updateCheckRate = function _callee7(req, res) {
+  var orderId, checkRate, order;
+  return regeneratorRuntime.async(function _callee7$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.prev = 0;
+          orderId = req.params.orderId;
+          checkRate = req.body.checkRate; // Update the checkRate field of the order in your database using Mongoose or any other ORM
+
+          _context7.next = 5;
+          return regeneratorRuntime.awrap(orders.findByIdAndUpdate(orderId, {
+            checkRate: checkRate
+          }));
+
+        case 5:
+          order = _context7.sent;
+
+          if (order) {
+            _context7.next = 8;
+            break;
+          }
+
+          return _context7.abrupt("return", res.status(404).json({
+            error: 'Order not found'
+          }));
+
+        case 8:
+          return _context7.abrupt("return", res.status(200).json({
+            message: 'Rate added successfully'
+          }));
+
+        case 11:
+          _context7.prev = 11;
+          _context7.t0 = _context7["catch"](0);
+          console.error('Error updating checkRate:', _context7.t0);
+          return _context7.abrupt("return", res.status(500).json({
+            error: 'Internal server error'
+          }));
+
+        case 15:
+        case "end":
+          return _context7.stop();
+      }
+    }
+  }, null, null, [[0, 11]]);
+};

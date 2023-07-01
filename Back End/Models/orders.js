@@ -19,7 +19,9 @@ const orderSchema = new mongoose.Schema({
         default: 'pending'
     },
     // payMethod:{type: String}, to be handeld later
-    date: { type: Date, default: Date.now }
+    date: { type: Date, default: Date.now },
+    checkRate: { type: Boolean, default: false }, // New field for check rate
+
 
 }, {
     strict: false,
