@@ -2,22 +2,27 @@
 
 var orders = require('../Models/orders');
 
+var User = require('../Models/Users');
+
+var Product = require('../Models/products');
+
 exports.createOrder = function _callee(req, res) {
-  var _req$body, productName, userId, sellerId, productId, qty, shippingAdress, delStatus, date, order, savedOrder;
+  var _req$body, productName, userId, sellerId, phoneNumber, productId, qty, shippingAddress, delStatus, date, order, savedOrder;
 
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           console.log(req.body);
-          _req$body = req.body, productName = _req$body.productName, userId = _req$body.userId, sellerId = _req$body.sellerId, productId = _req$body.productId, qty = _req$body.qty, shippingAdress = _req$body.shippingAdress, delStatus = _req$body.delStatus, date = _req$body.date;
+          _req$body = req.body, productName = _req$body.productName, userId = _req$body.userId, sellerId = _req$body.sellerId, phoneNumber = _req$body.phoneNumber, productId = _req$body.productId, qty = _req$body.qty, shippingAddress = _req$body.shippingAddress, delStatus = _req$body.delStatus, date = _req$body.date;
           order = new orders({
             productName: productName,
             userId: userId,
             sellerId: sellerId,
+            phoneNumber: phoneNumber,
             productId: productId,
             qty: qty,
-            shippingAdress: shippingAdress,
+            shippingAddress: shippingAddress,
             delStatus: delStatus,
             date: date
           });
@@ -236,42 +241,125 @@ exports.updateCheckRate = function _callee7(req, res) {
       }
     }
   }, null, null, [[0, 11]]);
-}; //Get All orders for selected seller by id 
+}; //---------------------------------------------------------------------------------------
+// Get all orders for selected seller by sellerId
 
 
-exports.getAllSellerOrders = function _callee8(req, res) {
-  var sellerId, sellerOrders;
-  return regeneratorRuntime.async(function _callee8$(_context8) {
+exports.getAllSellerOrders = function _callee9(req, res) {
+  var sellerId, seller, sellerOrders, ordersWithUserDetails;
+  return regeneratorRuntime.async(function _callee9$(_context9) {
     while (1) {
-      switch (_context8.prev = _context8.next) {
+      switch (_context9.prev = _context9.next) {
         case 0:
-          _context8.prev = 0;
-          sellerId = req.params.sellerId;
-          _context8.next = 4;
-          return regeneratorRuntime.awrap(orders.find({
-            sellerId: sellerId
-          }).populate('userId'));
+          _context9.prev = 0;
+          sellerId = req.params.sellerId; // Find seller by sellerId and role "seller"
+
+          _context9.next = 4;
+          return regeneratorRuntime.awrap(User.findOne({
+            _id: sellerId,
+            role: "seller"
+          }));
 
         case 4:
-          sellerOrders = _context8.sent;
+          seller = _context9.sent;
+
+          if (seller) {
+            _context9.next = 7;
+            break;
+          }
+
+          return _context9.abrupt("return", res.status(404).json({
+            error: 'Seller not found or does not have the role "seller".'
+          }));
+
+        case 7:
+          _context9.next = 9;
+          return regeneratorRuntime.awrap(orders.find({
+            sellerId: sellerId
+          }));
+
+        case 9:
+          sellerOrders = _context9.sent;
+          _context9.next = 12;
+          return regeneratorRuntime.awrap(Promise.all(sellerOrders.map(function _callee8(order) {
+            var userId, productId, user, product;
+            return regeneratorRuntime.async(function _callee8$(_context8) {
+              while (1) {
+                switch (_context8.prev = _context8.next) {
+                  case 0:
+                    userId = order.userId;
+                    productId = order.productId; // Find user details by userId
+
+                    _context8.next = 4;
+                    return regeneratorRuntime.awrap(User.findById(userId));
+
+                  case 4:
+                    user = _context8.sent;
+                    _context8.next = 7;
+                    return regeneratorRuntime.awrap(Product.findById(productId));
+
+                  case 7:
+                    product = _context8.sent;
+                    return _context8.abrupt("return", {
+                      _id: order._id,
+                      productName: order.productName,
+                      user: {
+                        userId: user._id,
+                        email: user.email,
+                        name: user.name // Include other user details if needed
+
+                      },
+                      product: {
+                        productId: product._id,
+                        name: product.name,
+                        price: product.price // Include other product details if needed
+
+                      },
+                      phoneNumber: order.phoneNumber,
+                      qty: order.qty,
+                      shippingAddress: order.shippingAddress,
+                      // Fixed spelling here
+                      delStatus: order.delStatus,
+                      date: order.date,
+                      checkRate: order.checkRate,
+                      seller: {
+                        sellerId: seller._id,
+                        name: seller.name,
+                        // Include seller's name
+                        email: seller.email // Include seller's email
+                        // Include other seller details if needed
+
+                      }
+                    });
+
+                  case 9:
+                  case "end":
+                    return _context8.stop();
+                }
+              }
+            });
+          })));
+
+        case 12:
+          ordersWithUserDetails = _context9.sent;
           res.json({
-            data: sellerOrders
+            data: ordersWithUserDetails
           });
-          _context8.next = 12;
+          _context9.next = 20;
           break;
 
-        case 8:
-          _context8.prev = 8;
-          _context8.t0 = _context8["catch"](0);
-          console.error('Error fetching seller orders:', _context8.t0);
+        case 16:
+          _context9.prev = 16;
+          _context9.t0 = _context9["catch"](0);
+          console.error('Error fetching seller orders:', _context9.t0);
           res.status(500).json({
             error: 'Internal server error'
           });
 
-        case 12:
+        case 20:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
     }
-  }, null, null, [[0, 8]]);
+  }, null, null, [[0, 16]]);
 };

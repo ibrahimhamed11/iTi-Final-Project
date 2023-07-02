@@ -1,12 +1,14 @@
 const orders = require('../Models/orders');
-
+const User = require('../Models/Users');
+const Product = require('../Models/products');
 exports.createOrder = async (req, res) => {
-    console.log(req.body)
-    const { productName, userId, sellerId, productId, qty, shippingAdress, delStatus, date } = req.body;
-    const order = new orders({ productName, userId, sellerId, productId, qty, shippingAdress, delStatus, date });
+    console.log(req.body);
+    const { productName, userId, sellerId, phoneNumber, productId, qty, shippingAddress, delStatus, date } = req.body;
+    const order = new orders({ productName, userId, sellerId, phoneNumber, productId, qty, shippingAddress, delStatus, date });
     const savedOrder = await order.save();
     res.status(201).json({ savedOrder, status: 201 });
-}
+};
+
 
 exports.getAllOrders = async (req, res) => {
     const order = await orders.find()
@@ -78,12 +80,67 @@ exports.updateCheckRate = async (req, res) => {
 
 
 
-//Get All orders for selected seller by id 
+
+
+
+//---------------------------------------------------------------------------------------
+// Get all orders for selected seller by sellerId
 exports.getAllSellerOrders = async (req, res) => {
     try {
         const sellerId = req.params.sellerId;
-        const sellerOrders = await orders.find({ sellerId }).populate('userId');
-        res.json({ data: sellerOrders });
+
+        // Find seller by sellerId and role "seller"
+        const seller = await User.findOne({ _id: sellerId, role: "seller" });
+
+        if (!seller) {
+            return res.status(404).json({ error: 'Seller not found or does not have the role "seller".' });
+        }
+
+        // Find orders for the selected sellerId
+        const sellerOrders = await orders.find({ sellerId });
+
+        // Fetch user details for each order
+        const ordersWithUserDetails = await Promise.all(sellerOrders.map(async (order) => {
+            const userId = order.userId;
+            const productId = order.productId;
+
+            // Find user details by userId
+            const user = await User.findById(userId);
+
+            // Find product details by productId
+            const product = await Product.findById(productId);
+
+            return {
+                _id: order._id,
+                productName: order.productName,
+                user: {
+                    userId: user._id,
+                    email: user.email,
+                    name: user.name,
+                    // Include other user details if needed
+                },
+                product: {
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    // Include other product details if needed
+                },
+                phoneNumber: order.phoneNumber,
+                qty: order.qty,
+                shippingAddress: order.shippingAddress, // Fixed spelling here
+                delStatus: order.delStatus,
+                date: order.date,
+                checkRate: order.checkRate,
+                seller: {
+                    sellerId: seller._id,
+                    name: seller.name, // Include seller's name
+                    email: seller.email, // Include seller's email
+                    // Include other seller details if needed
+                }
+            };
+        }));
+
+        res.json({ data: ordersWithUserDetails });
     } catch (error) {
         console.error('Error fetching seller orders:', error);
         res.status(500).json({ error: 'Internal server error' });

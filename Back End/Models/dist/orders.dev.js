@@ -24,6 +24,9 @@ var orderSchema = new mongoose.Schema({
     required: true
   },
   // New field for seller ID
+  phoneNumber: {
+    type: Number
+  },
   qty: {
     type: Number,
     required: false
