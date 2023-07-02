@@ -6,6 +6,8 @@ const orderSchema = new mongoose.Schema({
     productName: { type: String, required: true },
     userId: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
     productId: { type: mongoose.Types.ObjectId, ref: 'products', required: true },
+    sellerId: { type: mongoose.Types.ObjectId, ref: 'Seller', required: true }, // New field for seller ID
+
     qty: { type: Number, required: false },
     shippingAdress: {
         street: { type: String, required: false },

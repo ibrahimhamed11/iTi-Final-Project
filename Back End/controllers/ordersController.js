@@ -2,8 +2,8 @@ const orders = require('../Models/orders');
 
 exports.createOrder = async (req, res) => {
     console.log(req.body)
-    const { productName, userId, productId, qty, shippingAdress, delStatus, date } = req.body;
-    const order = new orders({ productName, userId, productId, qty, shippingAdress, delStatus, date });
+    const { productName, userId, sellerId, productId, qty, shippingAdress, delStatus, date } = req.body;
+    const order = new orders({ productName, userId, sellerId, productId, qty, shippingAdress, delStatus, date });
     const savedOrder = await order.save();
     res.status(201).json({ savedOrder, status: 201 });
 }
@@ -56,7 +56,7 @@ exports.getUserOrders = async (req, res) => {
     }
 };
 
-
+//-----------------------------------------------------------------------------------------------------
 exports.updateCheckRate = async (req, res) => {
     try {
         const orderId = req.params.orderId;
@@ -73,5 +73,19 @@ exports.updateCheckRate = async (req, res) => {
     } catch (error) {
         console.error('Error updating checkRate:', error);
         return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+//Get All orders for selected seller by id 
+exports.getAllSellerOrders = async (req, res) => {
+    try {
+        const sellerId = req.params.sellerId;
+        const sellerOrders = await orders.find({ sellerId }).populate('userId');
+        res.json({ data: sellerOrders });
+    } catch (error) {
+        console.error('Error fetching seller orders:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };

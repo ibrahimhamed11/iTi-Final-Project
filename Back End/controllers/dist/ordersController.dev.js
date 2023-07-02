@@ -3,17 +3,18 @@
 var orders = require('../Models/orders');
 
 exports.createOrder = function _callee(req, res) {
-  var _req$body, productName, userId, productId, qty, shippingAdress, delStatus, date, order, savedOrder;
+  var _req$body, productName, userId, sellerId, productId, qty, shippingAdress, delStatus, date, order, savedOrder;
 
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
           console.log(req.body);
-          _req$body = req.body, productName = _req$body.productName, userId = _req$body.userId, productId = _req$body.productId, qty = _req$body.qty, shippingAdress = _req$body.shippingAdress, delStatus = _req$body.delStatus, date = _req$body.date;
+          _req$body = req.body, productName = _req$body.productName, userId = _req$body.userId, sellerId = _req$body.sellerId, productId = _req$body.productId, qty = _req$body.qty, shippingAdress = _req$body.shippingAdress, delStatus = _req$body.delStatus, date = _req$body.date;
           order = new orders({
             productName: productName,
             userId: userId,
+            sellerId: sellerId,
             productId: productId,
             qty: qty,
             shippingAdress: shippingAdress,
@@ -186,7 +187,8 @@ exports.getUserOrders = function _callee6(req, res) {
       }
     }
   }, null, null, [[0, 8]]);
-};
+}; //-----------------------------------------------------------------------------------------------------
+
 
 exports.updateCheckRate = function _callee7(req, res) {
   var orderId, checkRate, order;
@@ -234,4 +236,42 @@ exports.updateCheckRate = function _callee7(req, res) {
       }
     }
   }, null, null, [[0, 11]]);
+}; //Get All orders for selected seller by id 
+
+
+exports.getAllSellerOrders = function _callee8(req, res) {
+  var sellerId, sellerOrders;
+  return regeneratorRuntime.async(function _callee8$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          _context8.prev = 0;
+          sellerId = req.params.sellerId;
+          _context8.next = 4;
+          return regeneratorRuntime.awrap(orders.find({
+            sellerId: sellerId
+          }).populate('userId'));
+
+        case 4:
+          sellerOrders = _context8.sent;
+          res.json({
+            data: sellerOrders
+          });
+          _context8.next = 12;
+          break;
+
+        case 8:
+          _context8.prev = 8;
+          _context8.t0 = _context8["catch"](0);
+          console.error('Error fetching seller orders:', _context8.t0);
+          res.status(500).json({
+            error: 'Internal server error'
+          });
+
+        case 12:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  }, null, null, [[0, 8]]);
 };

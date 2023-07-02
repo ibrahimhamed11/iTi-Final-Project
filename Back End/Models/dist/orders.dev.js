@@ -18,6 +18,12 @@ var orderSchema = new mongoose.Schema({
     ref: 'products',
     required: true
   },
+  sellerId: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Seller',
+    required: true
+  },
+  // New field for seller ID
   qty: {
     type: Number,
     required: false
