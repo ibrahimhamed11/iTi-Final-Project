@@ -49,10 +49,8 @@ exports.getAllProducts = async (req, res) => {
 //Get Seller`s products \
 exports.getSellerProducts = async (req, res) => {
   const _id = req.params.id;
-  console.log(_id);
   try {
     const product = await products.find({ seller: _id });
-    console.log(product);
     res.send(product);
   } catch (error) {
     console.log(error);
@@ -62,14 +60,19 @@ exports.getSellerProducts = async (req, res) => {
 //Get product by it`s id
 exports.getById = async (req, res) => {
   const product = await products.findById(req.params._id);
-  console.log(product);
   res.send(product);
 };
 
 //Update existing product
 exports.updateProduct = async (req, res) => {
-  const update = await products.findByIdAndUpdate(req.params.id, req.body);
-  res.send(update);
+  try {
+    console.log(req.body)
+    const update = await products.findByIdAndUpdate(req.params.id, { ...req.body });
+    console.log(update)
+    res.send(update);
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 //Delete existing product by Id
@@ -80,24 +83,12 @@ exports.delProduct = async (req, res) => {
 
 
 
-
-//Delete existing product by Id
-exports.delProduct = async (req, res) => {
-  const deleted = await products.findByIdAndDelete(req.params.id)
-  res.send(deleted)
-}
-
 //Delete all products 
 exports.delAllProducts = async (req, res) => {
   const deleted = await products.deleteMany()
   res.send(deleted)
 }
 
-//Delete all products
-exports.delAllProducts = async (req, res) => {
-  const deleted = await products.deleteMany();
-  res.send(deleted);
-};
 
 //Product Rate
 exports.productRate = async (req, res) => {

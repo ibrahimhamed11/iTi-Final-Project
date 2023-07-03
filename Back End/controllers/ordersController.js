@@ -1,12 +1,14 @@
 const orders = require('../Models/orders');
-
+const User = require('../Models/Users');
+const Product = require('../Models/products');
 exports.createOrder = async (req, res) => {
-    console.log(req.body)
-    const { productName, userId, productId, qty, shippingAdress, delStatus, date } = req.body;
-    const order = new orders({ productName, userId, productId, qty, shippingAdress, delStatus, date });
+    console.log(req.body);
+    const { productName, userId, sellerId, phoneNumber, productId, qty, shippingAddress, delStatus, date } = req.body;
+    const order = new orders({ productName, userId, sellerId, phoneNumber, productId, qty, shippingAddress, delStatus, date });
     const savedOrder = await order.save();
     res.status(201).json({ savedOrder, status: 201 });
-}
+};
+
 
 exports.getAllOrders = async (req, res) => {
     const order = await orders.find()
@@ -43,3 +45,104 @@ exports.delOrder = async (req, res) => {
     res.send(deleted)
 }
 
+
+// Get all orders for a selected user ID
+exports.getUserOrders = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const userOrders = await orders.find({ userId }).populate('_id');
+        res.json(userOrders);
+    } catch (error) {
+        console.error('Error fetching user orders:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+//-----------------------------------------------------------------------------------------------------
+exports.updateCheckRate = async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const { checkRate } = req.body;
+
+        // Update the checkRate field of the order in your database using Mongoose or any other ORM
+        const order = await orders.findByIdAndUpdate(orderId, { checkRate });
+
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        return res.status(200).json({ message: 'Rate added successfully' });
+    } catch (error) {
+        console.error('Error updating checkRate:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------
+// Get all orders for selected seller by sellerId
+exports.getAllSellerOrders = async (req, res) => {
+    try {
+        const sellerId = req.params.sellerId;
+
+        // Find seller by sellerId and role "seller"
+        const seller = await User.findOne({ _id: sellerId, role: "seller" });
+
+        if (!seller) {
+            return res.status(404).json({ error: 'Seller not found or does not have the role "seller".' });
+        }
+
+        // Find orders for the selected sellerId
+        const sellerOrders = await orders.find({ sellerId });
+
+        // Fetch user details for each order
+        const ordersWithUserDetails = await Promise.all(sellerOrders.map(async (order) => {
+            const userId = order.userId;
+            const productId = order.productId;
+
+            // Find user details by userId
+            const user = await User.findById(userId);
+
+            // Find product details by productId
+            const product = await Product.findById(productId);
+
+            return {
+                _id: order._id,
+                productName: order.productName,
+                user: {
+                    userId: user._id,
+                    email: user.email,
+                    name: user.name,
+                    // Include other user details if needed
+                },
+                product: {
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    // Include other product details if needed
+                },
+                phoneNumber: order.phoneNumber,
+                qty: order.qty,
+                shippingAddress: order.shippingAddress, // Fixed spelling here
+                delStatus: order.delStatus,
+                date: order.date,
+                checkRate: order.checkRate,
+                seller: {
+                    sellerId: seller._id,
+                    name: seller.name, // Include seller's name
+                    email: seller.email, // Include seller's email
+                    // Include other seller details if needed
+                }
+            };
+        }));
+
+        res.json({ data: ordersWithUserDetails });
+    } catch (error) {
+        console.error('Error fetching seller orders:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
