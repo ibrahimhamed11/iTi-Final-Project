@@ -158,21 +158,21 @@ exports.updateVaccination = async (req, res) => {
 
 
 
-exports.getVaccinationsForMother = async (req, res) => {
-  try {
-    const motherId = req.params.motherId;
-    const { min, max } = req.body;
+// exports.getVaccinationsForMother = async (req, res) => {
+//   try {
+//     const motherId = req.params.motherId;
+//     const { min, max } = req.body;
 
-    const vaccinations = await Vaccination.find({
-      motherId,
-      babyAge: { $gte: min, $lte: max },
-    });
+//     const vaccinations = await Vaccination.find({
+//       motherId,
+//       babyAge: { $gte: min, $lte: max },
+//     });
 
-    res.json(vaccinations);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
+//     res.json(vaccinations);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
 
 
 exports.deleteVaccination = async (req, res) => {

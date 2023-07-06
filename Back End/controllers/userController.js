@@ -10,6 +10,9 @@ const key = "test"; // Repl
 const multer = require("multer");
 const date = require("date-and-time");
 
+
+const Vaccination = require('../Models/vaccination');
+
 // Configure multer for file storage
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -158,42 +161,58 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-//Add baby
-
+// Add baby
 exports.addBaby = async (req, res) => {
   try {
     const userId = req.params.id;
     const babyInfo = req.body;
-    console.log(babyInfo)
 
     const user = await User.findById(userId);
-    if(!user) {
-     return res.status(404).json({error : 'User not found'});
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-    user.babyInfo.push(babyInfo);
+
+    const { age } = babyInfo;
+
+    // Find vaccinations that have a minimum and maximum range that includes the baby's age
+    const vaccinations = await Vaccination.find({
+      min: { $lte: age },
+      max: { $gte: age },
+    });
+
+    if (vaccinations.length === 0) {
+      // No applicable vaccinations found, add null vaccination array
+      babyInfo.vaccination = null;
+    } else {
+      // Add the baby's vaccination details
+      babyInfo.vaccination = vaccinations;
+    }
+
+    // Add the baby's details to the user's babyInfo array
+    user.profile.babyInfo.push(babyInfo);
     await user.save();
 
-    res.status(200).json({message: "Baby add successfully"})
+    res.status(200).json({ message: 'Baby added successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).json(error)
+    res.status(500).json({ error: 'Error adding baby' });
   }
 };
 
+
 //Get User babies
 
-exports.getBaby = async (req,res) => {
-  try{
+exports.getBaby = async (req, res) => {
+  try {
     const userId = req.params.id;
     const user = await User.findById(userId);
-    console.log(user.babyInfo)
-    if(!user) {
-      return res.status(404).json({error: "User not found"})
+    console.log(user.profile.babyInfo)
+    if (!user) {
+      return res.status(404).json({ error: "User not found" })
     }
 
-    res.status(200).json(user.babyInfo);
-  }catch(error) {
+    res.status(200).json(user.profile.babyInfo);
+  } catch (error) {
     console.log(error);
     res.status(500).json(error)
   }

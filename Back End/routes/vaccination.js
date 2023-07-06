@@ -18,6 +18,6 @@ router.delete('/:vaccinationId', vaccinationController.deleteVaccination);
 //---------------------------------------------------------------------------------------------------
 
 //only get in mother profile
-router.get('/user/:motherId', vaccinationController.getVaccinationsForMother);
+// router.get('/user/:motherId', vaccinationController.getVaccinationsForMother);
 
 module.exports = router;

@@ -59,24 +59,26 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
   },
-  babyInfo: [
-    {
-      name: String,
-      weight: Number,
-      height: Number,
-      headSize: Number,
-      birthDate: Date,
-      temperature: Number,
-      vaccination: Array,
-      extraInfo: [
-        {
-          foodTracker: String,
-          kindOfFood: String,
-        },
-      ],
-      reportFile: String,
-    },
-  ],
+  profile: {
+    babyInfo: [
+      {
+        name: String,
+        weight: Number,
+        height: Number,
+        headSize: Number,
+        age: Number,
+        temperature: Number,
+        vaccination: Array,
+        extraInfo: [
+          {
+            foodTracker: String,
+            kindOfFood: String
+          }
+        ],
+        reportFile: String
+      }
+    ]
+  },
   todo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "todo",
