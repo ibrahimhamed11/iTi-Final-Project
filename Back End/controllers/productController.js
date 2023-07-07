@@ -18,6 +18,8 @@ exports.upload = multer({ storage: fileStorage });
 exports.addProduct = (req, res) => {
   const { description, name, price, category, stock, rate, reviews, seller } =
     req.body;
+
+
   const product = new products({
     name,
     price,

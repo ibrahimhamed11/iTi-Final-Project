@@ -22,7 +22,7 @@ exports.upload = multer({ storage: fileStorage });
 
 
 // Create a new blog post
-exports.createBlog= async (req, res) => {
+exports.createBlog= async (req, res) => { 
 console.log(req.body)
   try {
     const blogPost = new BlogPost({
