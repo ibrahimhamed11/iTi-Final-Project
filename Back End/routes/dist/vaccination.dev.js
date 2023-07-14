@@ -16,7 +16,8 @@ router.get('/:vaccinationId', vaccinationController.getVaccineById); // Update a
 
 router.put('/:vaccinationId', vaccinationController.updateVaccination); // Delete a vaccination
 
-router["delete"]('/:vaccinationId', vaccinationController.deleteVaccination); //---------------------------------------------------------------------------------------------------
+router["delete"]('/:vaccinationId', vaccinationController.deleteVaccination); //get baby vaccination 
+//---------------------------------------------------------------------------------------------------
 //only get in mother profile
 // router.get('/user/:motherId', vaccinationController.getVaccinationsForMother);
 

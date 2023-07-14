@@ -32,6 +32,10 @@ router.get("/:userId", controllers.getUser);
 router["delete"]("/:userId", controllers.deleteUser);
 router.put("/:userId", controllers.updateUser);
 router.patch("/:id", controllers.addBaby);
-router.get("/baby/:id", controllers.getBaby);
+router.get("/baby/:id", controllers.getBaby); //get babhy vaccination 
+
+router.get('/baby/vaccinations/:babyId', controllers.getBabyVaccinationsById); //update vaccination status 
+
+router.patch('/baby/:babyId/vaccination/:vaccinationId', controllers.updateVaccinationStatus);
 router.use(express["static"](path.join(__dirname, "./../public")));
 module.exports = router;

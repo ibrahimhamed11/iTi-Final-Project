@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
 
-
-//Creating orders schema
+// Creating orders schema
 const orderSchema = new mongoose.Schema({
-
-    productName: { type: String, required: true },
     userId: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
-    productId: { type: mongoose.Types.ObjectId, ref: 'products', required: true },
-    sellerId: { type: mongoose.Types.ObjectId, ref: 'Seller', required: true }, // New field for seller ID
+    sellerId: { type: mongoose.Types.ObjectId, ref: 'Seller', required: true },
     phoneNumber: { type: Number },
-    qty: { type: Number, required: false },
-    shippingAdress: {
+    shippingAddress: {
         street: { type: String, required: false },
         city: { type: String, required: false },
         zipCode: { type: String, required: false },
@@ -21,18 +16,20 @@ const orderSchema = new mongoose.Schema({
         enum: ['pending', 'delivered', 'canceled', 'shipped'],
         default: 'pending'
     },
-    // payMethod:{type: String}, to be handeld later
     date: { type: Date, default: Date.now },
-    checkRate: { type: Boolean, default: false }, // New field for check rate
-
-
+    products: [
+        {
+            productName: { type: String },
+            productId: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
+            qty: { type: Number, required: false },
+            checkRate: { type: Boolean, default: false }
+        }
+    ]
 }, {
     strict: false,
-    versionKey: false,
-})
+    versionKey: false
+});
 
-const orders = mongoose.model('orders', orderSchema);
+const Order = mongoose.model('Order', orderSchema);
 
-
-
-module.exports = orders;
+module.exports = Order;

@@ -97,9 +97,9 @@ exports.productRate = async (req, res) => {
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
-    console.log("before");
+    // console.log("before");
     const averageRate = calculateAverageRate(product.rate);
-    console.log("after");
+    // console.log("after");
     res.json({ averageRate });
   } catch (error) {
     console.error("Error calculating average rate:", error);

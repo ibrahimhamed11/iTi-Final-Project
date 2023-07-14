@@ -6,6 +6,33 @@ const Posts = require("./BlogPost");
 const Comments = require("./comments");
 const Orders = require("./orders");
 
+const vaccinationSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+  name: String,
+  max: Number,
+  min: Number,
+  date: Date,
+  status: Boolean,
+  __v: Number,
+});
+
+const babyInfoSchema = new mongoose.Schema({
+  name: String,
+  weight: Number,
+  height: Number,
+  headSize: Number,
+  age: Number,
+  temperature: Number,
+  vaccination: [vaccinationSchema],
+  extraInfo: [
+    {
+      foodTracker: String,
+      kindOfFood: String,
+    },
+  ],
+  reportFile: String,
+});
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -25,7 +52,7 @@ const userSchema = new mongoose.Schema({
   },
   registrationDate: {
     type: Date,
-    default: Date.now, // Set the default value to the current date and time
+    default: Date.now,
   },
   password: {
     type: String,
@@ -34,11 +61,9 @@ const userSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    // required: true
   },
   age: {
     type: Number,
-    // required: true
   },
   phone: {
     type: Number,
@@ -49,7 +74,6 @@ const userSchema = new mongoose.Schema({
   },
   numOfBaby: {
     type: Number,
-    // required: true,
   },
   role: {
     type: String,
@@ -60,24 +84,7 @@ const userSchema = new mongoose.Schema({
     ref: "Product",
   },
   profile: {
-    babyInfo: [
-      {
-        name: String,
-        weight: Number,
-        height: Number,
-        headSize: Number,
-        age: Number,
-        temperature: Number,
-        vaccination: Array,
-        extraInfo: [
-          {
-            foodTracker: String,
-            kindOfFood: String
-          }
-        ],
-        reportFile: String
-      }
-    ]
+    babyInfo: [babyInfoSchema],
   },
   todo: {
     type: mongoose.Schema.Types.ObjectId,

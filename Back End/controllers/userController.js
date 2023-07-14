@@ -161,6 +161,9 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+
+
 // Add baby
 exports.addBaby = async (req, res) => {
   try {
@@ -182,7 +185,7 @@ exports.addBaby = async (req, res) => {
 
     if (vaccinations.length === 0) {
       // No applicable vaccinations found, add null vaccination array
-      babyInfo.vaccination = null;
+      babyInfo.vaccination = [];
     } else {
       // Add the baby's vaccination details
       babyInfo.vaccination = vaccinations;
@@ -457,5 +460,74 @@ exports.getSellerRegisteredPerDay = async (req, res) => {
     res.json({ data: result });
   } catch (error) {
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+
+
+//get baby vaccination
+exports.getBabyVaccinationsById = async (req, res) => {
+  try {
+    const babyId = req.params.babyId;
+    const user = await User.findOne({ 'profile.babyInfo._id': babyId });
+    if (user && user.profile && user.profile.babyInfo) {
+      const baby = user.profile.babyInfo.find((baby) => baby._id.toString() === babyId);
+      if (baby) {
+        const vaccinations = baby.vaccination;
+        res.status(200).json({ vaccinations });
+      } else {
+        res.status(404).json({ message: 'Baby not found' });
+      }
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving baby vaccinations' });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+exports.updateVaccinationStatus = async (req, res) => {
+  try {
+    const babyId = req.params.babyId;
+    const vaccinationId = req.params.vaccinationId;
+
+    const user = await User.findOne({ 'profile.babyInfo._id': babyId });
+
+    if (user && user.profile && user.profile.babyInfo) {
+      const baby = user.profile.babyInfo.find((baby) => baby._id.toString() === babyId);
+
+      if (baby) {
+        const vaccination = baby.vaccination.find((vaccine) => vaccine._id.toString() === vaccinationId);
+
+        if (vaccination) {
+          // Update the status of the vaccination
+          vaccination.status = true;
+
+          // Save the updated user
+          await user.save();
+
+          // Return the updated vaccination
+          res.status(200).json({ vaccination });
+        } else {
+          res.status(404).json({ message: 'Vaccination not found' });
+        }
+      } else {
+        res.status(404).json({ message: 'Baby not found' });
+      }
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating vaccination status' });
   }
 };
